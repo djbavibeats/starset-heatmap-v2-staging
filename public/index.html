@@ -49,7 +49,7 @@
                                 
                                     map.getSource('drone').setData(json);
                                 }
-                            }, 2000);
+                            }, 60000);
                             map.addSource('drone', { type: 'geojson', data: url });
                             map.addLayer({
                                 id: 'trees-heat',
