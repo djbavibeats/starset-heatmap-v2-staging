@@ -6,5 +6,19 @@
     </head>
     <body>
         <p>STARSET LIVE MAP USER EXPERIENCE YESSSSIR</p>
+        <p id="ip"></p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        let socket = io();
+
+        socket.on("connect", () => {
+            console.log("connected to server")
+            document.getElementById("ip").append("<p>Hi!</p>")
+        })
+
+        socket.on("disconnect", () => {
+            console.log("disconnected from server")
+        })
+    </script>
     </body>
 </html>
