@@ -7,18 +7,26 @@
     <body>
         <p>STARSET LIVE MAP USER EXPERIENCE YESSSSIR</p>
         <p id="ip"></p>
+        <div id="map" style="width: 100vw; height: 100vh;"></div>
+        <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+        <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+        <script src="http://js.api.here.com/v3/3.0/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+        <script>
+            // Create a Platform object (one per application):
+            var platform = new H.service.Platform({
+            'apikey': 'HvWLgUisokJbsKVrz8uevFey_P_r5fi5MN0wzWqB2MI'
+            });
+
+            // Get an object containing the default map layers:
+            var defaultLayers = platform.createDefaultLayers();
+
+            // Instantiate the map using the vecor map with the
+            // default style as the base layer:
+            var map = new H.Map(document.getElementById('mapContainer'),
+                defaultLayers.vector.normal.map);
+        </script>
     <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript">
-        let socket = io();
-
-        socket.on("connect", () => {
-            console.log("connected to server")
-            document.getElementById("ip").append("<p>Hi!</p>")
-        })
-
-        socket.on("disconnect", () => {
-            console.log("disconnected from server")
-        })
-    </script>
+    <script src="/js/index.js" type="text/javascript"></script>
     </body>
 </html>
