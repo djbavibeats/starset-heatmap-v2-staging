@@ -39,7 +39,7 @@
 
                         console.log(latitude, longitude);
 
-                        const url = 'http://localhost:3000/coordinates/get';
+                        const url = 'https://starset.herokuapp.com/coordinates/get';
                         map.on('load', () => {
                             setInterval(async () => {
                                 // make a GET request to parse the GeoJSON at the url
