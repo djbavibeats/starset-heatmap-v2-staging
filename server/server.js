@@ -14,9 +14,10 @@ app.use(express.static(publicPath));
 io.on("connection", (socket) => {
     console.log("new user connection")
 
-    socket.on("createMessage", (message) => {
-        console.log("createMessage", message);
-    })
+    socket.on('marker:create', function (data) {
+        console.log(data.type, data.lat, data.lon);
+        io.sockets.emit('call', {markers: [{type: data.type, lat: data.lat, lon: data.lon}]});
+    });
 
     socket.on("disconnect", () => {
         console.log("user was disconnected")

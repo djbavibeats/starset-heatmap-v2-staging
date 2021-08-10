@@ -9,11 +9,18 @@ socket.on("connect", function () {
         navigator.geolocation.getCurrentPosition(function (position) {
             latitude = position.coords.latitude;
             longitude = position.coords.longitude;
-            console.log(latitude, longitude)
+
             socket.emit("createMessage", {
                 "x": latitude,
                 "y": longitude
             })
+
+            var location = {
+                x: latitude, 
+                y: longitude
+            }
+
+            return location;
         });
     } else { 
         x.innerHTML = "Geolocation is not supported by this browser.";

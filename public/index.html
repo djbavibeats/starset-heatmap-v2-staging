@@ -3,30 +3,60 @@
     <head>
         <meta charset="utf-8">
         <title>Starset</title>
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.css' rel='stylesheet' />
     </head>
     <body>
         <p>STARSET LIVE MAP USER EXPERIENCE YESSSSIR</p>
         <p id="ip"></p>
-        <div id="map" style="width: 100vw; height: 100vh;"></div>
-        <script src="https://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-        <script>
-            // Create a Platform object (one per application):
-            var platform = new H.service.Platform({
-            'apikey': 'HvWLgUisokJbsKVrz8uevFey_P_r5fi5MN0wzWqB2MI'
-            });
+       
+        <div id='map' style='width: 400px; height: 300px;'></div>
+   
+            <script src="/socket.io/socket.io.js"></script>
+            <script type="text/javascript">
+                let socket = io();
+                var x = document.getElementById("ip");
+                let latitude;
+                let longitude;
+    
+                socket.on("connect", function () {
+                    console.log("connected to server")
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            latitude = position.coords.latitude;
+                            longitude = position.coords.longitude;
+    
+                            // socket.emit("createMessage", {
+                            //     "x": latitude,
+                            //     "y": longitude
+                            // })
 
-            // Get an object containing the default map layers:
-            var defaultLayers = platform.createDefaultLayers();
+                            socket.emit('marker:create', {type: 'theatre', lat: latitude, longitude: 10.5});
 
-            // Instantiate the map using the vecor map with the
-            // default style as the base layer:
-            var map = new H.Map(document.getElementById('mapContainer'),
-                defaultLayers.vector.normal.map);
-        </script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/index.js" type="text/javascript"></script>
+                            console.log(latitude, longitude);
+                            mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGludm9sdGNyZWF0aXZlIiwiYSI6ImNrczY2eDFpYTBieXEzMGxoaDF1Nmd2aXgifQ.0HoSQyn8pH5coK4IxPRhrQ';
+                            const map = new mapboxgl.Map({
+                                container: 'map', // container ID
+                                style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                                center: [ longitude, latitude ], // starting position [lng, lat]
+                                zoom: 15 // starting zoom
+                            });
+                        });
+                    } else { 
+                        x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
+                    
+                })
+    
+                socket.on("disconnect", function () {
+                    console.log("disconnected from server")
+                })
+
+               
+            </script>
+
+            <script>
+                
+            </script>
     </body>
 </html>
