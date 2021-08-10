@@ -1,7 +1,13 @@
 const path = require("path");
 const http = require("http");
+const bodyParser = require('body-parser');
 const express = require("express");
 const socketIO = require("socket.io");
+const MongoClient = require('mongodb').MongoClient;
+
+const  router  =  express.Router();
+
+const coordinatesRouter = require("./routes/coordinatesRoutes");
 
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 3000;
@@ -9,19 +15,42 @@ let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
 
-app.use(express.static(publicPath));
+app.use(express.static(publicPath))
 
-io.on("connection", (socket) => {
-    console.log("new user connection")
+//bodyparser middleware
+app.use(bodyParser.json());
 
-    socket.on('marker:create', function (data) {
-        console.log(data.type, data.lat, data.lon);
-        io.sockets.emit('call', {markers: [{type: data.type, lat: data.lat, lon: data.lon}]});
-    });
+//routes
+app.use("/coordinates", coordinatesRouter);
 
-    socket.on("disconnect", () => {
-        console.log("user was disconnected")
-    })
+MongoClient.connect('mongodb+srv://justin:Aoc!8314@cluster0.hi3xc.mongodb.net', function (err, client) {
+  if (err) throw err
+
+  var db = client.db('starset')
+  const coordinatesCollection = db.collection('coordinates');
+
+  db.collection('coordinates').find().toArray(function (err, result) {
+    if (err) throw err
+
+    console.log(result)
+  })
+  
+  io.on("connection", (socket) => {
+      console.log("new user connection");
+    //   socket.on("storeCoordinates", (coordinates) => {
+    //       coordinatesCollection.insertOne({
+    //           "type": "Feature",
+    //           "geometry": {
+    //             "type": "Point",
+    //             "coordinates": [coordinates.longitude, coordinates.latitude]
+    //           }
+    //         })
+    //   })
+  
+      socket.on("disconnect", () => {
+          console.log("user was disconnected")
+      })
+  })
 })
 
 
