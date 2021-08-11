@@ -17,19 +17,10 @@ MongoClient.connect('mongodb+srv://justin:Aoc!8314@cluster0.hi3xc.mongodb.net', 
       })
     router.route("/").get((req, res, next) => {
         res.set('Content-Type', 'application/json');
-        // res.send('{"message":"Hello froam the custom server!"}');
-        // res.json({ "hello": "Man" })
         db.collection('coordinates').find().toArray()
         .then(results => {
-            // console.log("Results", results);
             let jsonResults = JSON.stringify(results);
-            fs.writeFile('./coordinates.geojson', jsonResults, err => {
-                if (err) {
-                  console.error(err)
-                  return
-                }
-                //file written successfully
-              })
+            
             return res.json({ jsonResults });
         })
         .catch(error => console.error(error))
@@ -54,7 +45,6 @@ MongoClient.connect('mongodb+srv://justin:Aoc!8314@cluster0.hi3xc.mongodb.net', 
                     dataArray.join(",") 
                 + `]
             }`
-            console.log(dataString);
             return res.send(dataString)
         })
     })
