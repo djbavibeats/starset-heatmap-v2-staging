@@ -5,13 +5,32 @@
         <title>Starset</title>
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.css' rel='stylesheet' />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+        <style>
+            body {
+                margin: 0 auto;
+                background: black;
+            }
+
+            p {
+                text-align: center; 
+                font-family: 'Source Code Pro';
+                color: white;
+            }
+
+            #map {
+                width: 100vw;
+                height: 800px;
+            }
+        </style>
     </head>
     <body style="margin: 0 auto;">
-        <p>STARSET</p>
-        <p id="ip"></p>
+        <p style=" font-weight: bold;">Starset</p>
+        <p>BMI location device.</p>
        
-        <div id='map' style='width: 400px; height: 300px;'></div>
-   
+        <div id='map'></div>
             <script src="/socket.io/socket.io.js"></script>
             <script type="text/javascript">
                 let socket = io();
@@ -20,7 +39,6 @@
                 let longitude;
     
                 socket.on("connect", function () {
-                    console.log("connected to server")
                     navigator.geolocation.getCurrentPosition((position) => {
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
@@ -32,122 +50,121 @@
                         mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGludm9sdGNyZWF0aXZlIiwiYSI6ImNrczY2eDFpYTBieXEzMGxoaDF1Nmd2aXgifQ.0HoSQyn8pH5coK4IxPRhrQ';
                         const map = new mapboxgl.Map({
                             container: 'map',
-                            style: 'mapbox://styles/mapbox/streets-v11',
-                            zoom: 10,
+                            style: 'mapbox://styles/justinvoltcreative/cks7mdkj10use18phy8clt056',
+                            zoom: 5,
                             center: [longitude, latitude]
                         });
 
-                        console.log(latitude, longitude);
-
+                        // const url = 'http://localhost:3000/coordinates/get';
                         const url = 'https://starset.herokuapp.com/coordinates/get';
                         map.on('load', () => {
-                            setInterval(async () => {
-                                // make a GET request to parse the GeoJSON at the url
-                                const response = await fetch(url, { method: 'GET' });
-                                if (response.status >= 200 && response.status < 400) {
-                                    const json = await response.json();
-                                
-                                    map.getSource('drone').setData(json);
-                                }
-                            }, 60000);
-                            map.addSource('drone', { type: 'geojson', data: url });
-                            map.addLayer({
-                                id: 'trees-heat',
-                                type: 'heatmap',
-                                source: 'drone',
-                                maxzoom: 15,
-                                paint: {
-                                    // increase weight as diameter breast height increases
-                                    'heatmap-weight': {
-                                    property: 'dbh',
-                                    type: 'exponential',
-                                    stops: [
-                                        [1, 0],
-                                        [62, 1]
-                                    ]
-                                    },
-                                    // increase intensity as zoom level increases
-                                    'heatmap-intensity': {
-                                    stops: [
-                                        [11, 1],
-                                        [15, 3]
-                                    ]
-                                    },
-                                    // assign color values be applied to points depending on their density
-                                    'heatmap-color': [
-                                    'interpolate',
-                                    ['linear'],
-                                    ['heatmap-density'],
-                                    0, 'rgba(236,222,239,0)',
-                                    0.2, 'rgb(208,209,230)',
-                                    0.4, 'rgb(166,189,219)',
-                                    0.6, 'rgb(103,169,207)',
-                                    0.8, 'rgb(28,144,153)'
-                                    ],
-                                    // increase radius as zoom increases
-                                    'heatmap-radius': {
-                                    stops: [
-                                        [11, 15],
-                                        [15, 20]
-                                    ]
-                                    },
-                                    // decrease opacity to transition into the circle layer
-                                    'heatmap-opacity': {
-                                    default: 1,
-                                    stops: [
-                                        [14, 1],
-                                        [15, 0]
-                                    ]
-                                    },
-                                }
+                            // setInterval(() => {
+                                console.log("Refetching");
+                                fetch(url, { method: 'GET' })
+                                    .then(resp => resp.json())
+                                    .then(data => { map.getSource('BMIS').setData(data)});
+                                map.addSource('BMIS', { type: 'geojson', data: url });
+                                map.addLayer(
+                                    {
+                                        'id': 'trees-heat',
+                                        'type': 'heatmap',
+                                        'source': 'BMIS',
+                                        'maxzoom': 15,
+                                        'paint': {
+                                            // increase weight as diameter breast height increases
+                                            'heatmap-weight': {
+                                                'property': 'dbh',
+                                                'type': 'exponential',
+                                                'stops': [
+                                                [1, 0],
+                                                [62, 1]
+                                                ]
+                                            },
+                                            // increase intensity as zoom level increases
+                                            'heatmap-intensity': {
+                                                'stops': [
+                                                    [11, 1],
+                                                    [15, 3]
+                                                ]
+                                            },
+                                            // use sequential color palette to use exponentially as the weight increases
+                                            'heatmap-color': [
+                                                'interpolate',
+                                                ['linear'],
+                                                ['heatmap-density'],
+                                                0,
+                                                'rgba(236,222,239,0)',
+                                                0.2,
+                                                'rgb(208,209,230)',
+                                                0.4,
+                                                'rgb(166,189,219)',
+                                                0.6,
+                                                'rgb(103,169,207)',
+                                                0.8,
+                                                'rgb(28,144,153)'
+                                            ],
+                                            // increase radius as zoom increases
+                                            'heatmap-radius': {
+                                                'stops': [
+                                                    [11, 15],
+                                                    [15, 20]
+                                                ]
+                                            },
+                                            // decrease opacity to transition into the circle layer
+                                            'heatmap-opacity': {
+                                                'default': 1,
+                                                'stops': [
+                                                    [14, 1],
+                                                    [15, 0]
+                                                ]
+                                            }
+                                        }
+                                    }, 'waterway-label');
+     
+                                map.addLayer(
+                                    {
+                                        'id': 'trees-point',
+                                        'type': 'circle',
+                                        'source': 'BMIS',
+                                        'minzoom': 14,
+                                        'paint': {
+                                            // increase the radius of the circle as the zoom level and dbh value increases
+                                            'circle-radius': {
+                                                'property': 'dbh',
+                                                'type': 'exponential',
+                                                'stops': [
+                                                    [{ zoom: 15, value: 1 }, 5],
+                                                    [{ zoom: 15, value: 62 }, 10],
+                                                    [{ zoom: 22, value: 1 }, 20],
+                                                    [{ zoom: 22, value: 62 }, 50]
+                                                ]
+                                            },
+                                            'circle-color': {
+                                                'property': 'dbh',
+                                                'type': 'exponential',
+                                                'stops': [
+                                                    [0, 'rgba(236,222,239,0)'],
+                                                    [10, 'rgb(236,222,239)'],
+                                                    [20, 'rgb(208,209,230)'],
+                                                    [30, 'rgb(166,189,219)'],
+                                                    [40, 'rgb(103,169,207)'],
+                                                    [50, 'rgb(28,144,153)'],
+                                                    [60, 'rgb(1,108,89)']
+                                                ]
+                                            },
+                                            'circle-stroke-color': 'white',
+                                            'circle-stroke-width': 1,
+                                            'circle-opacity': {
+                                                'stops': [
+                                                    [14, 0],
+                                                    [15, 1]
+                                                ]
+                                            }
+                                        }
                                 }, 'waterway-label');
+                            // }, 60000)
                         })
-
-                        // setInterval(async () => {
-                            // fetch(url, {
-                            //     method: 'GET'
-                            // }).then(response => {
-                            //     return response.json();
-                            // }).then(data => {
-                            //     let markers = JSON.parse(data.jsonResults);
-                            //     let array = [];
-                            //     for (let i = 0; i < markers.length; i++) {
-                            //         array.push(markers[i].geometry.coordinates);
-                            //     }
-                            //     console.log(markers);
-                            //     map.addSource('trees', {
-                            //         type: 'canvas',
-                            //         coordinates: [
-                            //             array
-                            //         ]   
-
-                            //     })
-                            // })
-                        // }, 2000);
-                        
                     });
-
-
-                    
-                    
-                    
-                    
-                    
-                    
-                        // map.addSource('drone', { type: 'geojson', data: url });
-                        // map.addLayer({
-                        //     'id': 'drone',
-                        //     'type': 'symbol',
-                        //     'source': 'drone',
-                        //     'layout': {
-                        //         // This icon is a part of the Mapbox Streets style.
-                        //         // To view all images available in a Mapbox style, open
-                        //         // the style in Mapbox Studio and click the "Images" tab.
-                        //         // To add a new image to the style at runtime see
-                        //         // https://docs.mapbox.com/mapbox-gl-js/example/add-image/
-                        //         'icon-image': 'rocket-15'
-                        //     }
-                        // });
                 });
             </script>
     </body>
