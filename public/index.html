@@ -162,6 +162,13 @@
                                             }
                                         }
                                 }, 'waterway-label');
+
+                                map.on('click', 'trees-point', function(e) {
+                                new mapboxgl.Popup()
+                                    .setLngLat(e.features[0].geometry.coordinates)
+                                    .setHTML('<b>BMI LOCATED</b>')
+                                    .addTo(map);
+                                });
                             // }, 60000)
                         })
                     });
