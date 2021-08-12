@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const express = require("express");
 const socketIO = require("socket.io");
 const MongoClient = require('mongodb').MongoClient;
+require('dotenv').config()
 
 const  router  =  express.Router();
 
@@ -23,7 +24,7 @@ app.use(bodyParser.json());
 //routes
 app.use("/coordinates", coordinatesRouter);
 
-MongoClient.connect('mongodb+srv://justin:Aoc!8314@cluster0.hi3xc.mongodb.net', function (err, client) {
+MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
   if (err) throw err
 
   var db = client.db('starset')
