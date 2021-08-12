@@ -6,7 +6,7 @@ const { json } = require("body-parser");
 const { map } = require("bluebird");
 const router = express.Router();
 
-MongoClient.connect('mongodb+srv://justin:Aoc!8314@cluster0.hi3xc.mongodb.net', function (err, client) {
+MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
     
     var db = client.db('starset')
     console.log("New DB Connection")
