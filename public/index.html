@@ -3,8 +3,15 @@
     <head>
         <meta charset="utf-8">
         <title>Starset</title>
-        <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js'></script>
+        <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.css' rel='stylesheet' />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous">
+        </script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
@@ -20,41 +27,330 @@
                 color: white;
             }
 
+            .white-text { color: white; }
+            .black-text { color: black; }
+
+            #loading {
+                display: flex;
+                align-items: center;
+                background: black;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 10;
+                opacity: 1;
+                -webkit-transition: opacity 1000ms linear;
+                transition: opacity 1000ms linear;
+            }
+
+            #loading img {
+                margin: 0 auto;
+                width: 150px;
+
+            }
+            #bgvid {
+                position: absolute;
+                object-fit: cover;
+                width: 100vw;
+                height: 100vh;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                display: none;
+                opacity: 1;
+                -webkit-transition: opacity 1000ms linear;
+                transition: opacity 1000ms linear;
+            }
+
             #map {
                 width: 100vw;
-                height: 800px;
+                height: 650px;
+            }
+
+            #modal {
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('./bg_movie.mp4');
+                opacity: 1;
+                -webkit-transition: opacity 1000ms linear;
+                transition: opacity 1000ms linear;
+                display: none;
+                align-items: center;
+                justify-content: center;
+            }
+
+            audio {
+                position: absolute;
+                z-index: 3;
+            }
+
+            .modal-content {
+                background: rgba(0,0,0,.75);
+                border: 1px solid #1226AA; 
+                color: white;
+                border-radius: 25px;
+                width: 45%;
+                display: flex;
+                flex-direction: column;
+                padding: 50px;
+            }
+
+            .email-signup-input {
+                width: 200px;
+                margin: 0 auto;
+                padding: 10px 15px;
+                border-radius: 7px;
+                border: 1px solid #1226AA;
+                background: none;
+                color: white;
+            }
+
+            .email-signup-input:focus-visible {
+                outline: none;
+            }
+
+            .email-signup-button {
+                background: black;
+                color: white;
+                border-radius: 7px;
+                border: 1px solid #1226AA;
+                padding: 15px 50px;
+                margin: 0 auto;
+                font-family: 'Source Code Pro' !important;
+            }
+
+            .email-signup-button:hover {
+                cursor: pointer;
+            }
+
+            .radio-buttons-container {
+                display: inherit;
+                text-align: center;
+                margin: 0 auto;
+                margin-bottom: 15px;
+            }
+
+            .radio-buttons-container label {
+                display: block;
+                margin: 0px 25px;
+                font-family: 'Source Code Pro';
+            }
+
+            .embed-player {
+                background-color: black !important; 
+            }
+
+            
+
+            .dsp-icon {
+                width: 24px;
+            }
+
+            /* HIDE RADIO */
+            [type=radio] { 
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            }
+
+            /* IMAGE STYLES */
+            [type=radio] + svg {
+            cursor: pointer;
+            }
+
+            /* CHECKED STYLES */
+            [type=radio]:checked + svg {
+                fill: #1226AA;
+                border-radius: 100% 
+            }
+
+            .radio-buttons-container {
+                flex: display;
+                align-items: center;
+            }
+
+            .dots {
+                width: 15%;
+                padding-left: 25px;
+            }
+
+            .line {
+                width: 65%;
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            .top-bar {
+                /* display: flex; */
+            }
+
+            .logo {
+                width: 65px;
+                padding: 15px 25px;
+            }
+
+            .star {
+            }
+
+            .top-bar {
+                display: flex;
+            }
+            .top-container {
+                flex: .33;
+                align-self: center;
+            }
+
+            .words-logo { 
+                width: 175px;
+                text-align: center;
+
+            }
+
+            .mapboxgl-popup-content {
+                padding: 0;
+                background: none;
+            }
+
+            .mapboxgl-popup .-popup-anchor-top {
+                max-width: none;
             }
         </style>
     </head>
     <body style="margin: 0 auto;">
-        <p style=" font-weight: bold;">Starset</p>
-        <p>BMI location device.</p>
-       
-        <div id='map'></div>
+        <div id="loading"><img src="./loading.gif" /></div>
+            <video playsinline autoplay muted loop id="bgvid">
+                <source src="bg_movie.mp4" id="bgvidfile" type="video/mp4">
+            </video>
+            <iframe src="scifi.ogg" type="audio/ogg" allow="autoplay" id="audio" style="display:none"></iframe>
+            <audio id="audio-player" autoplay>
+                <source src="scifi.ogg" type="audio/ogg">
+            </audio>
+            <div class="top-bar">
+                <div class="top-container" style="text-align: left;">
+                    <img src="./loading.gif" class="dots" />
+                </div>
+                <div class="top-container" style="text-align: center;">
+                    <img src="./logo.png" class="words-logo" />
+                </div>
+                <div class="top-container" style="text-align: right;">
+                    <img src="./star.png" class="logo" />
+                </div>
+            </div>
+            
+            <div id='map'></div>
+            <div id='dsp'></div>
+        <div id='modal'>
+            <div class="modal-content">
+                <p class="white-text">Join the New West for access to the global BMI network and stay in touch with fellow Early Adopters.</p>
+                <input name="email" type="text" class="email-signup-input" id="email" placeholder="Enter email" />
+                <p class="white-text">Please select your preferred streaming service.</p>
+                <div class="radio-buttons-container">
+                    <div>
+                        <label for="spotify">
+                            <input type="radio" id="spotify" name="dsp" value="spotify">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fab" fill="#ffffff" width="24px" data-icon="spotify" class="svg-inline--fa fa-spotify fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"></path></svg>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="apple">
+                            <input type="radio" id="apple" name="dsp" value="apple">
+                            <svg aria-hidden="true" focusable="false" data-prefix="fab" fill="#ffffff" width="24px" data-icon="apple" class="social-svg svg-inline--fa fa-apple fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path></svg>                        
+                        </label>
+                    </div>
+                    <div>
+                        <label for="tidal">
+                            <input type="radio" id="tidal" name="dsp" value="tidal">
+                            <svg width="24px" viewBox="0 0 48 48" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 48C37.2548 48 48 37.2548 48 24C48 10.7452 37.2548 0 24 0C10.7452 0 0 10.7452 0 24C0 37.2548 10.7452 48 24 48Z" />
+                                <path d="M14.3527 16.8H14.4121C14.702 17.1326 15.016 17.4408 15.331 17.75L15.3311 17.75C15.5085 17.9241 15.6862 18.0986 15.8602 18.2778L19.1425 21.5601V21.6196C18.3506 22.4078 17.5606 23.1996 16.7705 23.9915C15.9751 24.7888 15.1797 25.5861 14.3824 26.3796C13.5841 25.5851 12.7876 24.7886 11.9912 23.9922C11.1947 23.1957 10.3983 22.3993 9.60001 21.6047C9.65572 21.4985 9.74571 21.4165 9.83497 21.3351L9.83498 21.335C9.87684 21.2969 9.91853 21.2588 9.95646 21.2185C10.5417 20.6274 11.1304 20.0398 11.719 19.4525L11.719 19.4524C12.6017 18.5715 13.4839 17.6911 14.3527 16.8ZM28.7899 21.4988C29.2513 21.0487 29.7058 20.5916 30.1603 20.1346C30.4788 19.8144 30.7972 19.4942 31.1179 19.1764C31.399 18.8926 31.682 18.6117 31.9649 18.331L31.9651 18.3307L31.9652 18.3306C32.4743 17.8253 32.983 17.3203 33.4794 16.8H33.5388C33.7279 17.0269 33.9379 17.2327 34.148 17.4384C34.2681 17.556 34.3881 17.6736 34.5042 17.7951L35.703 18.9938L38.1059 21.3968C38.1227 21.4156 38.1424 21.4339 38.1626 21.4526C38.214 21.5001 38.2682 21.5502 38.2841 21.6196C37.5044 22.3776 36.737 23.1496 35.9691 23.9221L35.969 23.9221L35.969 23.9221C35.1497 24.7462 34.3299 25.5709 33.4943 26.3796L28.9273 21.8126C28.9049 21.788 28.8805 21.7655 28.8564 21.7431L28.8563 21.7431C28.8322 21.7208 28.8084 21.6986 28.7869 21.6749C28.7665 21.6967 28.7444 21.7172 28.7223 21.7376C28.7061 21.7526 28.69 21.7676 28.6746 21.7829C27.9101 22.5439 27.1473 23.3066 26.3845 24.0694L26.3842 24.0697C25.6136 24.8403 24.8429 25.6109 24.0705 26.3796C23.3576 25.6767 22.6505 24.9678 21.9435 24.2589L21.9435 24.2589C21.0597 23.3728 20.1759 22.4867 19.2807 21.6121C20.1037 20.7538 20.9495 19.912 21.7952 19.0704L21.7952 19.0704C22.5518 18.3174 23.3083 17.5645 24.0482 16.8H24.1076C24.1523 16.8669 24.1967 16.9263 24.2561 16.9857C24.8714 17.595 25.4831 18.2079 26.095 18.821C26.9889 19.7166 27.8833 20.6126 28.7899 21.4988ZM20.8934 29.6224C20.3702 30.1447 19.8473 30.6668 19.3252 31.1888C19.3178 31.2037 19.3104 31.2223 19.303 31.2408C19.2955 31.2594 19.2881 31.2779 19.2807 31.2928C20.0922 32.0931 20.8953 32.8977 21.6994 33.7032C21.9622 33.9666 22.2252 34.23 22.4886 34.4934C22.7085 34.704 22.9233 34.9224 23.1382 35.1409C23.4387 35.4464 23.7396 35.7523 24.0556 36.038C24.2826 35.8377 24.5017 35.6133 24.7207 35.3889C24.867 35.239 25.0133 35.0891 25.162 34.9464C25.7367 34.3754 26.3115 33.8006 26.8863 33.2258C27.4552 32.657 28.024 32.0882 28.5928 31.523C28.6212 31.4895 28.6532 31.4595 28.6851 31.4297C28.7449 31.3737 28.804 31.3183 28.8379 31.2408C27.2487 29.6739 25.6744 28.0922 24.1 26.5104L24.0333 26.4807C22.9885 27.5305 21.9404 28.577 20.8934 29.6224Z" fill="black"/>
+                            </svg>                               
+                        </label>
+                    </div>
+                </div>
+                <button class="email-signup-button" onclick="submitForm()">
+                    Start Scan
+                </button>
+            </div>
+        </div>
             <script src="/socket.io/socket.io.js"></script>
             <script type="text/javascript">
+                $('#bgvid').on('loadeddata', function() {
+                    document.getElementById('loading').style.opacity = 0;
+                    document.getElementById("audio-player").play();
+                    // vAudio.play();   
+                    setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
+                })
+
+                let dsp = "";
+                let userEmail = "";
+                function checkEmail() {
+                    return fetch('http://localhost:3000/mailchimp/check-member', {
+                        method: 'POST',
+                        mode: 'cors',
+                                cache: 'no-cache',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    email: userEmail
+                                })
+                    }).then(resp => {
+                        return resp.json();
+                    }).then(data => {
+                        var result = data.members.filter(x => x.email_address === userEmail);
+                        dsp = result[0].tags[0].name;
+                        zoomMap();
+                        return dsp;
+                    });
+                } 
+                    
+                if (getCookie("email_signup")) {
+                    console.log(getCookie("email_signup"))
+                    userEmail = getCookie("email_signup");
+                    
+
+                    
+                    checkEmail()
+                        .then(() => {
+                            console.log(dsp)
+                            loadStreaming(dsp);
+                        })
+                } else {
+                    console.log("no email entered")
+                    document.getElementById("modal").style.display = 'flex';
+                    document.getElementById("bgvid").style.display = 'block';
+
+                }
+                
                 let socket = io();
                 var x = document.getElementById("ip");
                 let latitude;
                 let longitude;
-    
-                socket.on("connect", function () {
-                    navigator.geolocation.getCurrentPosition((position) => {
+
+                mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sdGNyZWF0aXZlIiwiYSI6ImNrc2o3Nm5xczJhcWYydm52dWZiNnFjYjYifQ.wiFR3wiw_OAAVayRRaChwA';
+                const map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/voltcreative/cksj7g9s0aen218rm63nhnyf2',
+                    zoom: 1,
+                    center: [0, 0]
+                });
+
+                navigator.geolocation.getCurrentPosition((position) => {
                         latitude = position.coords.latitude;
                         longitude = position.coords.longitude;
                         socket.emit('storeCoordinates', { 
                             latitude: latitude, 
                             longitude: longitude 
                         });
-
-                        mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGludm9sdGNyZWF0aXZlIiwiYSI6ImNrczY2eDFpYTBieXEzMGxoaDF1Nmd2aXgifQ.0HoSQyn8pH5coK4IxPRhrQ';
-                        const map = new mapboxgl.Map({
-                            container: 'map',
-                            style: 'mapbox://styles/justinvoltcreative/cks7mdkj10use18phy8clt056',
-                            zoom: 5,
-                            center: [longitude, latitude]
-                        });
-
+                
+                socket.on("connect", function () {
                         const url = 'http://localhost:3000/coordinates/get';
                         // const url = 'https://starset.herokuapp.com/coordinates/get';
                         map.on('load', () => {
@@ -64,6 +360,7 @@
                                     .then(resp => resp.json())
                                     .then(data => { map.getSource('BMIS').setData(data)});
                                 map.addSource('BMIS', { type: 'geojson', data: url });
+
                                 map.addLayer(
                                     {
                                         'id': 'trees-heat',
@@ -71,54 +368,26 @@
                                         'source': 'BMIS',
                                         'maxzoom': 15,
                                         'paint': {
-                                            // increase weight as diameter breast height increases
-                                            'heatmap-weight': {
-                                                'property': 'dbh',
-                                                'type': 'exponential',
-                                                'stops': [
-                                                [1, 0],
-                                                [62, 1]
-                                                ]
-                                            },
-                                            // increase intensity as zoom level increases
-                                            'heatmap-intensity': {
-                                                'stops': [
-                                                    [11, 1],
-                                                    [15, 3]
-                                                ]
-                                            },
-                                            // use sequential color palette to use exponentially as the weight increases
                                             'heatmap-color': [
+                                                "interpolate",
+                                                ["linear"],
+                                                ["heatmap-density"],
+                                                0, "rgba(0, 0, 255, 0)",
+                                                // .05, '#ff8d6b',
+                                                // .1, '#db0032',
+                                                .3, '#1226ab',
+                                                .4, '#655dc6',
+                                                1, '#ffffff'
+                                            ],
+                                            'heatmap-weight': [
                                                 'interpolate',
                                                 ['linear'],
-                                                ['heatmap-density'],
-                                                0,
-                                                'rgba(236,222,239,0)',
-                                                0.2,
-                                                'rgb(208,209,230)',
-                                                0.4,
-                                                'rgb(166,189,219)',
-                                                0.6,
-                                                'rgb(103,169,207)',
-                                                0.8,
-                                                'rgb(28,144,153)'
-                                            ],
-                                            // increase radius as zoom increases
-                                            'heatmap-radius': {
-                                                'stops': [
-                                                    [11, 15],
-                                                    [15, 20]
-                                                ]
-                                            },
-                                            // decrease opacity to transition into the circle layer
-                                            'heatmap-opacity': {
-                                                'default': 1,
-                                                'stops': [
-                                                    [14, 1],
-                                                    [15, 0]
-                                                ]
-                                            }
+                                                ['get', 'mag'],
+                                                0, 1, 30, 50
+                                            ]
+
                                         }
+                                        
                                     }, 'waterway-label');
      
                                 map.addLayer(
@@ -166,13 +435,135 @@
                                 map.on('click', 'trees-point', function(e) {
                                 new mapboxgl.Popup()
                                     .setLngLat(e.features[0].geometry.coordinates)
-                                    .setHTML('<b>BMI LOCATED</b>')
-                                    .addTo(map);
-                                });
+                                    .setHTML(`<div id="video-content" style="background: black;">
+                                        <div></div>
+                                    </div>`)
+                                    .on('open', () => {
+                                        document.getElementById('video-content').innerHTML = `<img src="./bmi_located.gif" />`
+                                    })
+                                    .addTo(map)
+                                })
                             // }, 60000)
                         })
                     });
                 });
+
+                let isAtStart = true;
+ 
+                function zoomMap() {
+                    const start = [0, 0];
+                    const end = [longitude, latitude];
+                    console.log(latitude, longitude);
+                    const target = isAtStart ? end : start;
+                    
+                    isAtStart = !isAtStart;
+                    
+                    map.flyTo({
+                        center: target,
+                        zoom: 8,
+                        bearing: 0,
+                        speed: .5,
+                        curve: 1,
+                        easing: (t) => t,
+                        essential: true
+                    });
+                };
+            
+                function submitForm() {
+                    let email = document.getElementById('email').value;
+                    let dspSubmit = document.querySelector('input[name = "dsp"]:checked').value;
+                    
+                    document.cookie = `email_signup=${email}`;
+                    
+                
+                    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                        let info = {
+                            email: email,
+                            dsp: [ dspSubmit ]
+                        }
+                        fetch('http://localhost:3000/mailchimp/check-member', {
+                            method: 'POST',
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(info)
+                        }).then(response => response.json().then(data => {
+                            var result = data.members.filter(x => x.email_address === email);
+
+                            if (result.length) {
+                                console.log("email already in system", result[0]);
+                                return fetch('http://localhost:3000/mailchimp/update-member', {
+                                    method: 'POST',
+                                    mode: 'cors',
+                                    cache: 'no-cache',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(info)
+                                })
+                            } else {
+                                console.log("new email");
+                                return fetch('http://localhost:3000/mailchimp/add-member', {
+                                    method: 'POST',
+                                    mode: 'cors',
+                                    cache: 'no-cache', 
+                                    headers: {
+                                    'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(info)
+                                })
+                            }
+
+                            return;
+                        })).then(() => {
+                            loadStreaming(dspSubmit);
+                            document.getElementById("modal").style.opacity = 0;
+                            document.getElementById("modal").style.display = 'none';
+                            document.getElementById("bgvid").style.opacity = 0;
+                            document.getElementById("bgvid").style.display = 'none';
+                            zoomMap();
+                        })
+                        return true;
+                    } else {
+                        alert("You have entered an invalid email address!")
+                        return false;
+                    }
+                }
+
+                function loadStreaming(platformName) {
+                    switch(platformName) {
+                        case('spotify'):
+                                document.getElementById("dsp").innerHTML = `<iframe src="https://open.spotify.com/embed/track/0KqSyyMHi1HADSaVz8suvI?theme=0" width="100%" height="150" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>`
+                                break;
+                            case('apple'):
+                                document.getElementById("dsp").innerHTML = `<iframe src="https://embed.music.apple.com/us/album/infected/1565419032?i=1565419042&amp;app=music&amp;itsct=music_box_player&amp;itscg=30200&amp;ct=songs_infected&amp;ls=1" height="150px" frameborder="0" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="autoplay *; encrypted-media *;" style="width: 100%; max-width: 660px; overflow: hidden; border-radius: 10px; background: transparent;"></iframe>` 
+                                break;
+                            case('tidal'):
+                                document.getElementById("dsp").innerHTML = `<div style="left: 0; width: 100%; height: 150px; position: relative;"><iframe src="https://embed.tidal.com/albums/182411161" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen allow="encrypted-media;"></iframe></div>` 
+                                break;
+                            default:
+                                break;
+                        }
+                }
+
+                function getCookie(cname) {
+                    let name = cname + "=";
+                    let ca = document.cookie.split(';');
+                    for(let i = 0; i < ca.length; i++) {
+                        let c = ca[i];
+                        while (c.charAt(0) == ' ') {
+                            c = c.substring(1);
+                        }
+                        if (c.indexOf(name) == 0) {
+                            return c.substring(name.length, c.length);
+                        }
+                    }
+                    return "";
+                }
+
+                
             </script>
     </body>
 </html>

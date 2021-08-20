@@ -9,6 +9,7 @@ require('dotenv').config()
 const  router  =  express.Router();
 
 const coordinatesRouter = require("./routes/coordinatesRoutes");
+const mailchimpRouter = require("./routes/mailchimpRoutes");
 
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 3000;
@@ -23,6 +24,9 @@ app.use(bodyParser.json());
 
 //routes
 app.use("/coordinates", coordinatesRouter);
+app.use("/mailchimp", mailchimpRouter)
+
+
 
 MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
   if (err) throw err
@@ -38,23 +42,21 @@ MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
   
   io.on("connection", (socket) => {
       console.log("new user connection");
-      socket.on("storeCoordinates", (coordinates) => {
-          coordinatesCollection.insertOne({
-              "type": "Feature",
-              "geometry": {
-                "type": "Point",
-                "coordinates": [coordinates.longitude, coordinates.latitude]
-              }
-            })
-      })
+      // socket.on("storeCoordinates", (coordinates) => {
+      //     coordinatesCollection.insertOne({
+      //         "type": "Feature",
+      //         "geometry": {
+      //           "type": "Point",
+      //           "coordinates": [coordinates.longitude, coordinates.latitude]
+      //         }
+      //       })
+      // })
   
       socket.on("disconnect", () => {
           console.log("user was disconnected")
       })
   })
 })
-
-
 
 server.listen(port, () => {
     console.log(`Server is up on port ${port}`);
