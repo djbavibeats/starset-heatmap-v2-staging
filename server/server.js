@@ -42,15 +42,15 @@ MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
   
   io.on("connection", (socket) => {
       console.log("new user connection");
-      // socket.on("storeCoordinates", (coordinates) => {
-      //     coordinatesCollection.insertOne({
-      //         "type": "Feature",
-      //         "geometry": {
-      //           "type": "Point",
-      //           "coordinates": [coordinates.longitude, coordinates.latitude]
-      //         }
-      //       })
-      // })
+      socket.on("storeCoordinates", (coordinates) => {
+          coordinatesCollection.insertOne({
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [coordinates.longitude, coordinates.latitude]
+              }
+            })
+      })
   
       socket.on("disconnect", () => {
           console.log("user was disconnected")
