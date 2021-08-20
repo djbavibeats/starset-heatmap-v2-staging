@@ -291,7 +291,7 @@
                 let dsp = "";
                 let userEmail = "";
                 function checkEmail() {
-                    return fetch('https://starset.herokuapp.com/mailchimp/check-member', {
+                    return fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
                         method: 'POST',
                         mode: 'cors',
                                 cache: 'no-cache',
@@ -352,7 +352,7 @@
                 
                 socket.on("connect", function () {
                         // const url = 'http://localhost:3000/coordinates/get';
-                        const url = 'https://starset.herokuapp.com/coordinates/get';
+                        const url = 'https://starset-map.herokuapp.com/coordinates/get';
                         map.on('load', () => {
                             // setInterval(() => {
                                 console.log("Refetching");
@@ -481,7 +481,7 @@
                             email: email,
                             dsp: [ dspSubmit ]
                         }
-                        fetch('https://starset.herokuapp.com/mailchimp/check-member', {
+                        fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
                             method: 'POST',
                             mode: 'cors',
                             cache: 'no-cache',
@@ -494,7 +494,7 @@
 
                             if (result.length) {
                                 console.log("email already in system", result[0]);
-                                return fetch('https://starset.herokuapp.com/mailchimp/update-member', {
+                                return fetch('https://starset-map.herokuapp.com/mailchimp/update-member', {
                                     method: 'POST',
                                     mode: 'cors',
                                     cache: 'no-cache',
@@ -505,7 +505,7 @@
                                 })
                             } else {
                                 console.log("new email");
-                                return fetch('https://starset.herokuapp.com/mailchimp/add-member', {
+                                return fetch('https://starset-map.herokuapp.com/mailchimp/add-member', {
                                     method: 'POST',
                                     mode: 'cors',
                                     cache: 'no-cache', 
