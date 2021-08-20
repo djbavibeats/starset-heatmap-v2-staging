@@ -228,10 +228,10 @@
             <video playsinline autoplay muted loop id="bgvid">
                 <source src="bg_movie.mp4" id="bgvidfile" type="video/mp4">
             </video>
-            <iframe src="scifi.ogg" type="audio/ogg" allow="autoplay" id="audio" style="display:none"></iframe>
+            <!-- <iframe src="scifi.ogg" type="audio/ogg" allow="autoplay" id="audio" style="display:none"></iframe>
             <audio id="audio-player" autoplay>
                 <source src="scifi.ogg" type="audio/ogg">
-            </audio>
+            </audio> -->
             <div class="top-bar">
                 <div class="top-container" style="text-align: left;">
                     <img src="./loading.gif" class="dots" />
@@ -283,7 +283,7 @@
             <script type="text/javascript">
                 $('#bgvid').on('loadeddata', function() {
                     document.getElementById('loading').style.opacity = 0;
-                    document.getElementById("audio-player").play();
+                    // document.getElementById("audio-player").play();
                     // vAudio.play();   
                     setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
                 })
