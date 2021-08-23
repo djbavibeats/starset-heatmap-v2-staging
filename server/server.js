@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const express = require("express");
 const socketIO = require("socket.io");
 const MongoClient = require('mongodb').MongoClient;
-const sslRedirect = require('heroku-ssl-redirect');
 require('dotenv').config()
 
 const  router  =  express.Router();
@@ -22,7 +21,6 @@ app.use(express.static(publicPath))
 
 //bodyparser middleware
 app.use(bodyParser.json());
-app.use(sslRedirect)
 
 //routes
 app.use("/coordinates", coordinatesRouter);
