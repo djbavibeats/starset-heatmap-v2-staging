@@ -281,59 +281,8 @@
         </div>
             <script src="/socket.io/socket.io.js"></script>
             <script type="text/javascript">
-                $('#bgvid').on('loadeddata', function() {
-                    document.getElementById('loading').style.opacity = 0;
-                    // document.getElementById("audio-player").play();
-                    // vAudio.play();   
-                    setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
-                })
-
-                let dsp = "";
-                let userEmail = "";
-                function checkEmail() {
-                    return fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
-                        method: 'POST',
-                        mode: 'cors',
-                                cache: 'no-cache',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    email: userEmail
-                                })
-                    }).then(resp => {
-                        return resp.json();
-                    }).then(data => {
-                        var result = data.members.filter(x => x.email_address === userEmail);
-                        dsp = result[0].tags[0].name;
-                        zoomMap();
-                        return dsp;
-                    });
-                } 
-                    
-                if (getCookie("email_signup")) {
-                    console.log(getCookie("email_signup"))
-                    userEmail = getCookie("email_signup");
-                    
-
-                    
-                    checkEmail()
-                        .then(() => {
-                            console.log(dsp)
-                            loadStreaming(dsp);
-                        })
-                } else {
-                    console.log("no email entered")
-                    document.getElementById("modal").style.display = 'flex';
-                    document.getElementById("bgvid").style.display = 'block';
-
-                }
-                
-                let socket = io();
-                var x = document.getElementById("ip");
                 let latitude;
                 let longitude;
-
                 mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sdGNyZWF0aXZlIiwiYSI6ImNrc2o3Nm5xczJhcWYydm52dWZiNnFjYjYifQ.wiFR3wiw_OAAVayRRaChwA';
                 const map = new mapboxgl.Map({
                     container: 'map',
@@ -341,113 +290,176 @@
                     zoom: 1,
                     center: [0, 0]
                 });
-
-                navigator.geolocation.getCurrentPosition((position) => {
-                        latitude = position.coords.latitude;
-                        longitude = position.coords.longitude;
-                        socket.emit('storeCoordinates', { 
-                            latitude: latitude, 
-                            longitude: longitude 
-                        });
-                
-                socket.on("connect", function () {
-                        // const url = 'http://localhost:3000/coordinates/get';
-                        const url = 'https://starset-map.herokuapp.com/coordinates/get';
-                        map.on('load', () => {
-                            // setInterval(() => {
-                                console.log("Refetching");
-                                fetch(url, { method: 'GET' })
-                                    .then(resp => resp.json())
-                                    .then(data => { map.getSource('BMIS').setData(data)});
-                                map.addSource('BMIS', { type: 'geojson', data: url });
-
-                                map.addLayer(
-                                    {
-                                        'id': 'trees-heat',
-                                        'type': 'heatmap',
-                                        'source': 'BMIS',
-                                        'maxzoom': 15,
-                                        'paint': {
-                                            'heatmap-color': [
-                                                "interpolate",
-                                                ["linear"],
-                                                ["heatmap-density"],
-                                                0, "rgba(0, 0, 255, 0)",
-                                                // .05, '#ff8d6b',
-                                                // .1, '#db0032',
-                                                .3, '#1226ab',
-                                                .4, '#655dc6',
-                                                1, '#ffffff'
-                                            ],
-                                            'heatmap-weight': [
-                                                'interpolate',
-                                                ['linear'],
-                                                ['get', 'mag'],
-                                                0, 1, 30, 50
-                                            ]
-
-                                        }
-                                        
-                                    }, 'waterway-label');
-     
-                                map.addLayer(
-                                    {
-                                        'id': 'trees-point',
-                                        'type': 'circle',
-                                        'source': 'BMIS',
-                                        'minzoom': 14,
-                                        'paint': {
-                                            // increase the radius of the circle as the zoom level and dbh value increases
-                                            'circle-radius': {
-                                                'property': 'dbh',
-                                                'type': 'exponential',
-                                                'stops': [
-                                                    [{ zoom: 15, value: 1 }, 5],
-                                                    [{ zoom: 15, value: 62 }, 10],
-                                                    [{ zoom: 22, value: 1 }, 20],
-                                                    [{ zoom: 22, value: 62 }, 50]
-                                                ]
-                                            },
-                                            'circle-color': {
-                                                'property': 'dbh',
-                                                'type': 'exponential',
-                                                'stops': [
-                                                    [0, 'rgba(236,222,239,0)'],
-                                                    [10, 'rgb(236,222,239)'],
-                                                    [20, 'rgb(208,209,230)'],
-                                                    [30, 'rgb(166,189,219)'],
-                                                    [40, 'rgb(103,169,207)'],
-                                                    [50, 'rgb(28,144,153)'],
-                                                    [60, 'rgb(1,108,89)']
-                                                ]
-                                            },
-                                            'circle-stroke-color': 'white',
-                                            'circle-stroke-width': 1,
-                                            'circle-opacity': {
-                                                'stops': [
-                                                    [14, 0],
-                                                    [15, 1]
-                                                ]
-                                            }
-                                        }
-                                }, 'waterway-label');
-
-                                map.on('click', 'trees-point', function(e) {
-                                new mapboxgl.Popup()
-                                    .setLngLat(e.features[0].geometry.coordinates)
-                                    .setHTML(`<div id="video-content" style="background: black;">
-                                        <div></div>
-                                    </div>`)
-                                    .on('open', () => {
-                                        document.getElementById('video-content').innerHTML = `<img src="./bmi_located.gif" />`
+                $('#bgvid').on('loadeddata', function() {
+                    renderMap().then(() => {
+                        console.log("Map loaded");
+                        if (getCookie("email_signup")) {
+                            console.log("HEY")
+                            checkEmail()
+                                .then(() => {
+                                        console.log(dsp);
+                                        document.getElementById('loading').style.opacity = 0;
+                                        setTimeout(function(){ 
+                                            document.getElementById('loading').style.display = 'none'; 
+                                            zoomMap();
+                                        }, 500);
                                     })
-                                    .addTo(map)
-                                })
-                            // }, 60000)
+                        } else {
+                            console.log("no email entered")
+                            document.getElementById('loading').style.opacity = 0;
+                            setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
+                            document.getElementById("modal").style.display = 'flex';
+                            document.getElementById("bgvid").style.display = 'block';
+                        }
+                    })
+
+                    // document.getElementById("audio-player").play();
+                    // vAudio.play();   
+                })
+
+                let dsp = "";
+                let userEmail = "";
+                function checkEmail() {
+                    userEmail = getCookie("email_signup");
+                    console.log(userEmail);
+
+                    return new Promise((resolve, reject) => {
+                        fetch('http://localhost:3000/mailchimp/check-member', {
+                            method: 'POST',
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: userEmail
+                            })
+                        }).then(resp => {
+                            return resp.json();
+                        }).then(data => {
+                            var result = data.members.filter(x => x.email_address === userEmail);
+                            dsp = result[0].tags[0].name;
+                            console.log("YES")
+                            resolve();
+                            // zoomMap();
+                        });
+                    });
+                    
+                } 
+                    
+                function renderMap() {
+                    let socket = io();
+                    var x = document.getElementById("ip");
+    
+                    return new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition((position) => {
+                            latitude = position.coords.latitude;
+                            longitude = position.coords.longitude;
+                            socket.emit('storeCoordinates', { 
+                                latitude: latitude, 
+                                longitude: longitude 
+                            });
+                    
+                            const url = 'http://localhost:3000/coordinates/get';
+                            // const url = 'https://starset-map.herokuapp.com/coordinates/get';
+                            map.on('load', () => {
+                                    fetch(url, { method: 'GET' })
+                                        .then(resp => resp.json())
+                                        .then(data => {
+                                            console.log("data for map", data);
+                                            map.getSource('BMIS').setData(data)
+                                            resolve();
+                                        });
+                                    map.addSource('BMIS', { type: 'geojson', data: url });
+    
+                                    map.addLayer(
+                                        {
+                                            'id': 'trees-heat',
+                                            'type': 'heatmap',
+                                            'source': 'BMIS',
+                                            'maxzoom': 15,
+                                            'paint': {
+                                                'heatmap-color': [
+                                                    "interpolate",
+                                                    ["linear"],
+                                                    ["heatmap-density"],
+                                                    0, "rgba(0, 0, 255, 0)",
+                                                    // .05, '#ff8d6b',
+                                                    // .1, '#db0032',
+                                                    .3, '#1226ab',
+                                                    .4, '#655dc6',
+                                                    1, '#ffffff'
+                                                ],
+                                                'heatmap-weight': [
+                                                    'interpolate',
+                                                    ['linear'],
+                                                    ['get', 'mag'],
+                                                    0, 1, 30, 50
+                                                ]
+    
+                                            }
+                                            
+                                        }, 'waterway-label');
+         
+                                    map.addLayer(
+                                        {
+                                            'id': 'trees-point',
+                                            'type': 'circle',
+                                            'source': 'BMIS',
+                                            'minzoom': 14,
+                                            'paint': {
+                                                // increase the radius of the circle as the zoom level and dbh value increases
+                                                'circle-radius': {
+                                                    'property': 'dbh',
+                                                    'type': 'exponential',
+                                                    'stops': [
+                                                        [{ zoom: 15, value: 1 }, 5],
+                                                        [{ zoom: 15, value: 62 }, 10],
+                                                        [{ zoom: 22, value: 1 }, 20],
+                                                        [{ zoom: 22, value: 62 }, 50]
+                                                    ]
+                                                },
+                                                'circle-color': {
+                                                    'property': 'dbh',
+                                                    'type': 'exponential',
+                                                    'stops': [
+                                                        [0, 'rgba(236,222,239,0)'],
+                                                        [10, 'rgb(236,222,239)'],
+                                                        [20, 'rgb(208,209,230)'],
+                                                        [30, 'rgb(166,189,219)'],
+                                                        [40, 'rgb(103,169,207)'],
+                                                        [50, 'rgb(28,144,153)'],
+                                                        [60, 'rgb(1,108,89)']
+                                                    ]
+                                                },
+                                                'circle-stroke-color': 'white',
+                                                'circle-stroke-width': 1,
+                                                'circle-opacity': {
+                                                    'stops': [
+                                                        [14, 0],
+                                                        [15, 1]
+                                                    ]
+                                                }
+                                            }
+                                    }, 'waterway-label');
+    
+                                    map.on('click', 'trees-point', function(e) {
+                                        new mapboxgl.Popup()
+                                            .setLngLat(e.features[0].geometry.coordinates)
+                                            .setHTML(`<div id="video-content" style="background: black;">
+                                                <div></div>
+                                            </div>`)
+                                            .on('open', () => {
+                                                document.getElementById('video-content').innerHTML = `<img src="./bmi_located.gif" />`
+                                            })
+                                            .addTo(map)
+                                    })
+                            })
                         })
                     });
-                });
 
+                }
+                
                 let isAtStart = true;
  
                 function zoomMap() {
@@ -481,7 +493,7 @@
                             email: email,
                             dsp: [ dspSubmit ]
                         }
-                        fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
+                        fetch('http://localhost:3000/mailchimp/check-member', {
                             method: 'POST',
                             mode: 'cors',
                             cache: 'no-cache',
@@ -494,7 +506,7 @@
 
                             if (result.length) {
                                 console.log("email already in system", result[0]);
-                                return fetch('https://starset-map.herokuapp.com/mailchimp/update-member', {
+                                return fetch('http://localhost:3000/mailchimp/update-member', {
                                     method: 'POST',
                                     mode: 'cors',
                                     cache: 'no-cache',
@@ -502,10 +514,18 @@
                                         'Content-Type': 'application/json'
                                     },
                                     body: JSON.stringify(info)
+                                }).then(response => {
+                                    console.log("Email updated", response)
+                                    loadStreaming(dspSubmit);
+                                    document.getElementById("modal").style.opacity = 0;
+                                    document.getElementById("modal").style.display = 'none';
+                                    document.getElementById("bgvid").style.opacity = 0;
+                                    document.getElementById("bgvid").style.display = 'none';
+                                    zoomMap();
                                 })
                             } else {
                                 console.log("new email");
-                                return fetch('https://starset-map.herokuapp.com/mailchimp/add-member', {
+                                return fetch('http://localhost:3000/mailchimp/add-member', {
                                     method: 'POST',
                                     mode: 'cors',
                                     cache: 'no-cache', 
@@ -513,23 +533,27 @@
                                     'Content-Type': 'application/json'
                                     },
                                     body: JSON.stringify(info)
+                                }).then(response => {
+                                    console.log("Email added", response)
+                                    loadStreaming(dspSubmit);
+                                    document.getElementById("modal").style.opacity = 0;
+                                    document.getElementById("modal").style.display = 'none';
+                                    document.getElementById("bgvid").style.opacity = 0;
+                                    document.getElementById("bgvid").style.display = 'none';
+                                    zoomMap();
                                 })
                             }
-
                             return;
-                        })).then(() => {
-                            loadStreaming(dspSubmit);
-                            document.getElementById("modal").style.opacity = 0;
-                            document.getElementById("modal").style.display = 'none';
-                            document.getElementById("bgvid").style.opacity = 0;
-                            document.getElementById("bgvid").style.display = 'none';
-                            zoomMap();
-                        })
+                        }))
                         return true;
                     } else {
                         alert("You have entered an invalid email address!")
                         return false;
                     }
+                }
+
+                function revealMap() {
+                    
                 }
 
                 function loadStreaming(platformName) {

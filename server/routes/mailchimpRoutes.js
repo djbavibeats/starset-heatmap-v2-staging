@@ -65,7 +65,7 @@ router.route("/update-member").post(async (req, res, next) => {
     fetch(`https://us1.api.mailchimp.com/3.0/lists/a753b0ac3d/members/${hash}/tags`, requestOptions)
         .then(response => response.text())
         .then(result => { 
-            console.log(result)
+            console.log("Result", result)
             return res.send(result);
         })
     .catch(error => console.log('error', error));
