@@ -67,6 +67,7 @@
             #map {
                 width: 100vw;
                 height: 650px;
+                visibility: hidden;
             }
 
             #modal {
@@ -301,26 +302,24 @@
                 }
                     $('#bgvid').on('loadeddata', function() {         
                         getLocation().then(() => {
-                            console.log("Done")
                             renderMap().then(() => {
-                                console.log("Map loaded");
                                 if (getCookie("email_signup")) {
-                                    console.log("HEY")
                                     checkEmail()
                                         .then(() => {
-                                                console.log(dsp);
+                                                loadStreaming(dsp);
                                                 document.getElementById('loading').style.opacity = 0;
+                                                document.getElementById("map").style.visibility = 'visible';
                                                 setTimeout(function(){ 
                                                     document.getElementById('loading').style.display = 'none'; 
                                                     zoomMap();
                                                 }, 500);
                                             })
                                 } else {
-                                    console.log("no email entered")
                                     document.getElementById('loading').style.opacity = 0;
                                     setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
                                     document.getElementById("modal").style.display = 'flex';
                                     document.getElementById("bgvid").style.display = 'block';
+                                   
                                 }
                             })
                         })
@@ -334,7 +333,6 @@
                 let userEmail = "";
                 function checkEmail() {
                     userEmail = getCookie("email_signup");
-                    console.log(userEmail);
 
                     return new Promise((resolve, reject) => {
                         fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
@@ -352,7 +350,6 @@
                         }).then(data => {
                             var result = data.members.filter(x => x.email_address === userEmail);
                             dsp = result[0].tags[0].name;
-                            console.log("YES")
                             resolve();
                             // zoomMap();
                         });
@@ -377,11 +374,9 @@
                         // const url = 'https://starset-map.herokuapp.com/coordinates/get';
                         const url = 'https://starset-map.herokuapp.com/coordinates/get';
                         map.on('load', () => {
-                                    console.log("Hello?")
                                     fetch(url, { method: 'GET' })
                                         .then(resp => resp.json())
                                         .then(data => {
-                                            console.log("data for map", data);
                                             map.getSource('BMIS').setData(data)
                                             resolve();
                                         });
@@ -479,7 +474,6 @@
                 function zoomMap() {
                     const start = [0, 0];
                     const end = [longitude, latitude];
-                    console.log(latitude, longitude);
                     const target = isAtStart ? end : start;
                     
                     isAtStart = !isAtStart;
@@ -519,7 +513,6 @@
                             var result = data.members.filter(x => x.email_address === email);
 
                             if (result.length) {
-                                console.log("email already in system", result[0]);
                                 return fetch('https://starset-map.herokuapp.com/mailchimp/update-member', {
                                     method: 'POST',
                                     mode: 'cors',
@@ -529,16 +522,15 @@
                                     },
                                     body: JSON.stringify(info)
                                 }).then(response => {
-                                    console.log("Email updated", response)
                                     loadStreaming(dspSubmit);
                                     document.getElementById("modal").style.opacity = 0;
                                     document.getElementById("modal").style.display = 'none';
                                     document.getElementById("bgvid").style.opacity = 0;
                                     document.getElementById("bgvid").style.display = 'none';
+                                    document.getElementById("map").style.visibility = 'visible';
                                     zoomMap();
                                 })
                             } else {
-                                console.log("new email");
                                 return fetch('https://starset-map.herokuapp.com/mailchimp/add-member', {
                                     method: 'POST',
                                     mode: 'cors',
@@ -548,12 +540,12 @@
                                     },
                                     body: JSON.stringify(info)
                                 }).then(response => {
-                                    console.log("Email added", response)
                                     loadStreaming(dspSubmit);
                                     document.getElementById("modal").style.opacity = 0;
                                     document.getElementById("modal").style.display = 'none';
                                     document.getElementById("bgvid").style.opacity = 0;
                                     document.getElementById("bgvid").style.display = 'none';
+                                    document.getElementById("map").style.visibility = 'visible';
                                     zoomMap();
                                 })
                             }
