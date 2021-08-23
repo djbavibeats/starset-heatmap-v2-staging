@@ -283,44 +283,48 @@
             <script type="text/javascript">
                 let latitude;
                 let longitude;
-                mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sdGNyZWF0aXZlIiwiYSI6ImNrc2o3Nm5xczJhcWYydm52dWZiNnFjYjYifQ.wiFR3wiw_OAAVayRRaChwA';
-                const map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/voltcreative/cksj7g9s0aen218rm63nhnyf2',
-                    zoom: 1,
-                    center: [0, 0]
-                });
-                navigator.geolocation.getCurrentPosition((position) => {
-                            latitude = position.coords.latitude;
-                            longitude = position.coords.longitude;
-                            socket.emit('storeCoordinates', { 
-                                latitude: latitude, 
-                                longitude: longitude 
-                            });
-                        })
-                $('#bgvid').on('loadeddata', function() {
-
-                    renderMap().then(() => {
-                        console.log("Map loaded");
-                        if (getCookie("email_signup")) {
-                            console.log("HEY")
-                            checkEmail()
-                                .then(() => {
-                                        console.log(dsp);
-                                        document.getElementById('loading').style.opacity = 0;
-                                        setTimeout(function(){ 
-                                            document.getElementById('loading').style.display = 'none'; 
-                                            zoomMap();
-                                        }, 500);
-                                    })
-                        } else {
-                            console.log("no email entered")
-                            document.getElementById('loading').style.opacity = 0;
-                            setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
-                            document.getElementById("modal").style.display = 'flex';
-                            document.getElementById("bgvid").style.display = 'block';
-                        }
+                let socket = io();
+                
+                function getLocation() {
+                    return new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition((position) => {
+                                latitude = position.coords.latitude;
+                                longitude = position.coords.longitude;
+                                socket.emit('storeCoordinates', { 
+                                    latitude: latitude, 
+                                    longitude: longitude 
+                                });
+                                
+                                resolve();
+                            })
                     })
+                }
+                    $('#bgvid').on('loadeddata', function() {         
+                        getLocation().then(() => {
+                            console.log("Done")
+                            renderMap().then(() => {
+                                console.log("Map loaded");
+                                if (getCookie("email_signup")) {
+                                    console.log("HEY")
+                                    checkEmail()
+                                        .then(() => {
+                                                console.log(dsp);
+                                                document.getElementById('loading').style.opacity = 0;
+                                                setTimeout(function(){ 
+                                                    document.getElementById('loading').style.display = 'none'; 
+                                                    zoomMap();
+                                                }, 500);
+                                            })
+                                } else {
+                                    console.log("no email entered")
+                                    document.getElementById('loading').style.opacity = 0;
+                                    setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
+                                    document.getElementById("modal").style.display = 'flex';
+                                    document.getElementById("bgvid").style.display = 'block';
+                                }
+                            })
+                        })
+                    
 
                     // document.getElementById("audio-player").play();
                     // vAudio.play();   
@@ -355,15 +359,25 @@
                     });
                     
                 } 
-                    
+
+                var map = '';
+                
                 function renderMap() {
-                    let socket = io();
                     var x = document.getElementById("ip");
-    
+                    
+                    mapboxgl.accessToken = 'pk.eyJ1Ijoidm9sdGNyZWF0aXZlIiwiYSI6ImNrc2o3Nm5xczJhcWYydm52dWZiNnFjYjYifQ.wiFR3wiw_OAAVayRRaChwA';
+                    map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/voltcreative/cksj7g9s0aen218rm63nhnyf2',
+                        zoom: 1,
+                        center: [0, 0]
+                    });
+                    
                     return new Promise((resolve, reject) => {
-                            // const url = 'http://localhost:3000/coordinates/get';
-                            const url = 'https://starset-map.herokuapp.com/coordinates/get';
-                            map.on('load', () => {
+                        // const url = 'https://starset-map.herokuapp.com/coordinates/get';
+                        const url = 'https://starset-map.herokuapp.com/coordinates/get';
+                        map.on('load', () => {
+                                    console.log("Hello?")
                                     fetch(url, { method: 'GET' })
                                         .then(resp => resp.json())
                                         .then(data => {
