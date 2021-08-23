@@ -290,7 +290,16 @@
                     zoom: 1,
                     center: [0, 0]
                 });
+                navigator.geolocation.getCurrentPosition((position) => {
+                            latitude = position.coords.latitude;
+                            longitude = position.coords.longitude;
+                            socket.emit('storeCoordinates', { 
+                                latitude: latitude, 
+                                longitude: longitude 
+                            });
+                        })
                 $('#bgvid').on('loadeddata', function() {
+
                     renderMap().then(() => {
                         console.log("Map loaded");
                         if (getCookie("email_signup")) {
@@ -352,14 +361,6 @@
                     var x = document.getElementById("ip");
     
                     return new Promise((resolve, reject) => {
-                        navigator.geolocation.getCurrentPosition((position) => {
-                            latitude = position.coords.latitude;
-                            longitude = position.coords.longitude;
-                            socket.emit('storeCoordinates', { 
-                                latitude: latitude, 
-                                longitude: longitude 
-                            });
-                    
                             // const url = 'http://localhost:3000/coordinates/get';
                             const url = 'https://starset-map.herokuapp.com/coordinates/get';
                             map.on('load', () => {
@@ -455,7 +456,6 @@
                                             .addTo(map)
                                     })
                             })
-                        })
                     });
 
                 }
