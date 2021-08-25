@@ -171,7 +171,7 @@ function renderMap() {
                     </div>`)
                     .on('open', () => {
                         document.getElementById('video-content').innerHTML = `<div>
-                            <img style="width: 240px; height: 240px;" src="./bmi_located.gif" />
+                            <img style="width: 240px; height: 240px;" src="./assets/bmi_located.gif" />
                             <div class="social-modal-button-wrapper">
                                 <button class="social-modal-button" onclick="socialModal();">Share</button>
                             </div>

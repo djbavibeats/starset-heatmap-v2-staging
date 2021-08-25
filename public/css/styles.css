@@ -67,7 +67,7 @@ p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('./bg_movie.mp4');
+    background: url('../assets/bg_movie.mp4');
     opacity: 1;
     -webkit-transition: opacity 1000ms linear;
     transition: opacity 1000ms linear;

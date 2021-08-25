@@ -20,16 +20,16 @@
         <meta name="twitter:title" content="STARSET HEATMAP">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:description" content="I've been scanned by Starset #NewWestIndustries">
-        <meta name="twitter:image" content="https://starset-map.herokuapp.com/starset.jpg">
+        <meta name="twitter:image" content="http://localhost:3000/assets/starset.jpg">
         <meta name="twitter:domain" content="starset-map.herokuapp.com">
 
-        <meta property="og:url"                content="https://starset-map.herokuapp.com" />
+        <meta property="og:url"                content="http://localhost:3000" />
         <meta property="og:type"               content="website" />
         <meta property="og:title"              content="STARSET HEATMAP" />
         <meta property="og:description"        content="I've been scanned by Starset." />
-        <meta property="og:image"              content="https://starset-map.herokuapp.com/starset.jpg" />
+        <meta property="og:image"              content="http://localhost:3000/assets/starset.jpg" />
 
-        <link rel="shortcut icon" type="image/ico" href="./favicon.ico"/>
+        <link rel="shortcut icon" type="image/ico" href="./assets/favicon.ico"/>
     
         <!-- Load Facebook SDK for JavaScript -->
         <div id="fb-root"></div>
@@ -60,20 +60,20 @@
     </head>
     <body style="margin: 0 auto;">
 
-        <div id="loading"><p>Connecting you to New West's global BMI network. <br />Please enable location permissions in your browser's and device's settings. <br /> Your patience is appreciated.</p><img src="./loading.gif" /></div>
+        <div id="loading"><p>Connecting you to New West's global BMI network. <br />Please enable location permissions in your browser's and device's settings. <br /> Your patience is appreciated.</p><img src="./assets/loading.gif" /></div>
         <video playsinline autoplay muted loop id="bgvid">
-            <source src="bg_movie.mp4" id="bgvidfile" type="video/mp4">
+            <source src="./assets/bg_movie.mp4" id="bgvidfile" type="video/mp4">
         </video>
         
         <div class="top-bar">
             <div class="top-container" style="text-align: left;">
-                <img src="./loading.gif" class="dots" />
+                <img src="./assets/loading.gif" class="dots" />
             </div>
             <div class="top-container" style="text-align: center;">
-                <img src="./logo.png" class="words-logo" />
+                <img src="./assets/logo.png" class="words-logo" />
             </div>
             <div class="top-container" style="text-align: right;">
-                <img src="./star.png" class="logo" />
+                <img src="./assets/star.png" class="logo" />
             </div>
         </div>
         
@@ -125,19 +125,19 @@
                     </p>
                 </div>
                 <div class="social-buttons">
-                    <a class="tweet-button" href="https://twitter.com/intent/tweet?text=I%27ve%20been%20scanned%20by%20Starset&url=https://starset-map.herokuapp.com" target="_blank" rel="noopener noreferrer">
-                        <img src="./twitter-brands.svg" />
+                    <a class="tweet-button" href="https://twitter.com/intent/tweet?text=I%27ve%20been%20scanned%20by%20Starset&url=http://localhost:3000" target="_blank" rel="noopener noreferrer">
+                        <img src="./assets/twitter-brands.svg" />
                         <span class="btn-text">Tweet</span>
                     </a>
                     <a class="facebook-button" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fstarset.herokuapp.com%2F&amp;src=sdkpreparse" target="_blank" rel="noopener noreferrer">
-                        <img src="./facebook-f-brands.svg" />
+                        <img src="./assets/facebook-f-brands.svg" />
                         <span class="btn-text">Share</span>
                     </a>
                 </div>
             </div>
         </div>
         <div id="mobile-instructions">
-            <img src="./phone_landscape.png" />
+            <img src="./assets/phone_landscape.png" />
             <p>Rotate device to engage.</p>
         </div>
             <script src="/socket.io/socket.io.js"></script>
