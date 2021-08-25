@@ -68,7 +68,7 @@ let userEmail = "";
 function checkEmail() {
     userEmail = getCookie("email_signup");
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:3000/mailchimp/check-member', {
+        fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -104,7 +104,7 @@ function renderMap() {
     });
     
     return new Promise((resolve, reject) => {
-        const url = 'http://localhost:3000/coordinates/get';
+        const url = 'https://starset-map.herokuapp.com/coordinates/get';
         map.on('load', () => {
             fetch(url, { method: 'GET' })
                 .then(resp => resp.json())
@@ -263,7 +263,7 @@ function submitForm() {
             email: email,
             dsp: [ dspSubmit ]
         }
-        fetch('http://localhost:3000/mailchimp/check-member', {
+        fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -275,7 +275,7 @@ function submitForm() {
             var result = data.members.filter(x => x.email_address === email);
 
             if (result.length) {
-                return fetch('http://localhost:3000/mailchimp/update-member', {
+                return fetch('https://starset-map.herokuapp.com/mailchimp/update-member', {
                     method: 'POST',
                     mode: 'cors',
                     cache: 'no-cache',
@@ -293,7 +293,7 @@ function submitForm() {
                     zoomMap();
                 })
             } else {
-                return fetch('http://localhost:3000/mailchimp/add-member', {
+                return fetch('https://starset-map.herokuapp.com/mailchimp/add-member', {
                     method: 'POST',
                     mode: 'cors',
                     cache: 'no-cache', 
