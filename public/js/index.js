@@ -68,7 +68,7 @@ let userEmail = "";
 function checkEmail() {
     userEmail = getCookie("email_signup");
     return new Promise((resolve, reject) => {
-        fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
+        fetch('http://localhost:3000/mailchimp/check-member', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -104,7 +104,7 @@ function renderMap() {
     });
     
     return new Promise((resolve, reject) => {
-        const url = 'https://starset-map.herokuapp.com/coordinates/get';
+        const url = 'http://localhost:3000/coordinates/get';
         map.on('load', () => {
             fetch(url, { method: 'GET' })
                 .then(resp => resp.json())
@@ -183,13 +183,13 @@ function renderMap() {
                 new mapboxgl.Popup()
                     .setLngLat(e.features[0].geometry.coordinates)
                     .setHTML(`<div id="video-content" style="background: black;">
-                        <div><div class="fb-share-button" 
-                        data-href="https://www.your-domain.com/your-page.html" 
-                        data-layout="button_count">
-                        </div></div>
+                        <div></div>
                     </div>`)
                     .on('open', () => {
-                        document.getElementById('video-content').innerHTML = `<img src="./bmi_located.gif" />`
+                        document.getElementById('video-content').innerHTML = `<div>
+                            <img src="./bmi_located.gif" />
+                            <button onclick="socialModal();">Share</button>
+                        </div>`
                     })
                     .addTo(map)
             })                        
@@ -198,6 +198,13 @@ function renderMap() {
 }
 
 let isAtStart = true;
+
+function socialModal() {
+    $('#social-modal').css({
+        'display': 'flex',
+        'opacity': '1'
+    })
+}
 
 function zoomMap() {
     const start = [0, 0];
@@ -256,7 +263,7 @@ function submitForm() {
             email: email,
             dsp: [ dspSubmit ]
         }
-        fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
+        fetch('http://localhost:3000/mailchimp/check-member', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -268,7 +275,7 @@ function submitForm() {
             var result = data.members.filter(x => x.email_address === email);
 
             if (result.length) {
-                return fetch('https://starset-map.herokuapp.com/mailchimp/update-member', {
+                return fetch('http://localhost:3000/mailchimp/update-member', {
                     method: 'POST',
                     mode: 'cors',
                     cache: 'no-cache',
@@ -286,7 +293,7 @@ function submitForm() {
                     zoomMap();
                 })
             } else {
-                return fetch('https://starset-map.herokuapp.com/mailchimp/add-member', {
+                return fetch('http://localhost:3000/mailchimp/add-member', {
                     method: 'POST',
                     mode: 'cors',
                     cache: 'no-cache', 

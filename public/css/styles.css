@@ -237,3 +237,18 @@ cursor: pointer;
 #mobile-instructions p {
     font-size: 42px;
 }
+
+#social-modal {
+    display: none;
+    position: absolute;
+    width: 65%;
+    height: 50%;
+    background: rgba(0,0,0,.75);
+    border: 1px solid #1226AA; 
+    opacity: 0;
+    top: 20%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    border-radius: 25px;
+}
