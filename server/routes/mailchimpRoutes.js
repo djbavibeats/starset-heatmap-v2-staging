@@ -16,7 +16,7 @@ MailchimpClient.setConfig({
 router.route("/add-member").post((req, res, next) => {
     res.set('Content-Type', 'application/json');
     console.log("Request", req.body);
-    MailchimpClient.lists.addListMember("a753b0ac3d", {
+    MailchimpClient.lists.addListMember("6ad68f1bc1", {
           email_address: req.body.email,
           status: "subscribed",
           tags: req.body.dsp
@@ -24,14 +24,18 @@ router.route("/add-member").post((req, res, next) => {
         console.log(result)
         return res.send(result)
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+        console.log(err)
+        return res.send(err);
+    });
 
 })
 
 router.route("/check-member").post((req, res, next) => {
     res.set('Content-Type', 'application/json');
-    return MailchimpClient.lists.getListMembersInfo("a753b0ac3d")
+    return MailchimpClient.lists.getListMembersInfo("6ad68f1bc1")
         .then(resp => {
+            console.log("success", resp);
             return res.send(resp)
         })
     .catch(err => console.log(err));
@@ -62,7 +66,7 @@ router.route("/update-member").post(async (req, res, next) => {
     };
       
 
-    fetch(`https://us1.api.mailchimp.com/3.0/lists/a753b0ac3d/members/${hash}/tags`, requestOptions)
+    fetch(`https://us7.api.mailchimp.com/3.0/lists/6ad68f1bc1/members/${hash}/tags`, requestOptions)
         .then(response => response.text())
         .then(result => { 
             console.log("Result", result)

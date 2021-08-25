@@ -66,27 +66,11 @@ let dsp = "";
 let userEmail = "";
 
 function checkEmail() {
-    userEmail = getCookie("email_signup");
     return new Promise((resolve, reject) => {
-        fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: userEmail
-            })
-        }).then(resp => {
-            return resp.json();
-        }).then(data => {
-            var result = data.members.filter(x => x.email_address === userEmail);
-            dsp = result[0].tags[0].name;
-            resolve();
-        });
-    });
-    
+        userEmail = getCookie("email_signup");
+        dsp = getCookie("dsp");
+        resolve();
+    })
 } 
 
 var map = '';
@@ -187,8 +171,10 @@ function renderMap() {
                     </div>`)
                     .on('open', () => {
                         document.getElementById('video-content').innerHTML = `<div>
-                            <img src="./bmi_located.gif" />
-                            <button onclick="socialModal();">Share</button>
+                            <img style="width: 240px; height: 240px;" src="./bmi_located.gif" />
+                            <div class="social-modal-button-wrapper">
+                                <button class="social-modal-button" onclick="socialModal();">Share</button>
+                            </div>
                         </div>`
                     })
                     .addTo(map)
@@ -200,6 +186,7 @@ function renderMap() {
 let isAtStart = true;
 
 function socialModal() {
+    $('#social-modal-wrapper').css({ 'display': 'block' })
     $('#social-modal').css({
         'display': 'flex',
         'opacity': '1'
@@ -257,63 +244,52 @@ function submitForm() {
     let dspSubmit = document.querySelector('input[name = "dsp"]:checked').value;
     
     document.cookie = `email_signup=${email}`;
+    document.cookie = `dsp=${dspSubmit}`;
 
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         let info = {
             email: email,
             dsp: [ dspSubmit ]
         }
-        fetch('https://starset-map.herokuapp.com/mailchimp/check-member', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            headers: {
+            return fetch('https://starset-map.herokuapp.com/mailchimp/add-member', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache', 
+                headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(info)
-        }).then(response => response.json().then(data => {
-            var result = data.members.filter(x => x.email_address === email);
-
-            if (result.length) {
-                return fetch('https://starset-map.herokuapp.com/mailchimp/update-member', {
-                    method: 'POST',
-                    mode: 'cors',
-                    cache: 'no-cache',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(info)
-                }).then(response => {
-                    loadStreaming(dspSubmit);
-                    document.getElementById("modal").style.opacity = 0;
-                    document.getElementById("modal").style.display = 'none';
-                    document.getElementById("bgvid").style.opacity = 0;
-                    document.getElementById("bgvid").style.display = 'none';
-                    document.getElementById("map").style.visibility = 'visible';
-                    zoomMap();
+                },
+                body: JSON.stringify(info)
+            }).then(response => {
+                return response.json().then(data => {
+                    if (data.status == 400) {
+                        return fetch('https://starset-map.herokuapp.com/mailchimp/update-member', {
+                            method: 'POST',
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(info)
+                        }).then(response => {
+                            loadStreaming(dspSubmit);
+                            document.getElementById("modal").style.opacity = 0;
+                            document.getElementById("modal").style.display = 'none';
+                            document.getElementById("bgvid").style.opacity = 0;
+                            document.getElementById("bgvid").style.display = 'none';
+                            document.getElementById("map").style.visibility = 'visible';
+                            zoomMap();
+                        })
+                    } else {
+                        loadStreaming(dspSubmit);
+                        document.getElementById("modal").style.opacity = 0;
+                        document.getElementById("modal").style.display = 'none';
+                        document.getElementById("bgvid").style.opacity = 0;
+                        document.getElementById("bgvid").style.display = 'none';
+                        document.getElementById("map").style.visibility = 'visible';
+                        zoomMap();
+                    }
                 })
-            } else {
-                return fetch('https://starset-map.herokuapp.com/mailchimp/add-member', {
-                    method: 'POST',
-                    mode: 'cors',
-                    cache: 'no-cache', 
-                    headers: {
-                    'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(info)
-                }).then(response => {
-                    loadStreaming(dspSubmit);
-                    document.getElementById("modal").style.opacity = 0;
-                    document.getElementById("modal").style.display = 'none';
-                    document.getElementById("bgvid").style.opacity = 0;
-                    document.getElementById("bgvid").style.display = 'none';
-                    document.getElementById("map").style.visibility = 'visible';
-                    zoomMap();
-                })
-            }
-            return;
-        }))
-        return true;
+            })
     } else {
         alert("You have entered an invalid email address!")
         return false;
@@ -353,12 +329,9 @@ function getCookie(cname) {
 
 // Check to see if device is accessing site on mobile
 $(window).resize(function() {
-    console.log("resize!");
     if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        console.log("mobile")
         if (window.matchMedia("(orientation: portrait)").matches) {
             // you're in PORTRAIT mode
-            console.log("portrait");
             $('#mobile-instructions').css({
                 'position': 'absolute',
                 'width': '100%',
@@ -371,13 +344,17 @@ $(window).resize(function() {
 
         if (window.matchMedia("(orientation: landscape)").matches) {
             // you're in LANDSCAPE mode
-            console.log("landscape")
             $('#mobile-instructions').css({
                 'display' : 'none'
             })
         }
 
-    } else {
-        console.log("desktop")
     }
 }).resize();
+
+window.onclick = function(event) {
+    var socialModalWrapper = document.getElementById('social-modal-wrapper');
+    if (event.target == socialModalWrapper) {
+        socialModalWrapper.style.display = "none";
+    }
+}
