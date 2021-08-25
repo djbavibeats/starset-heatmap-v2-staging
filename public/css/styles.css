@@ -1,0 +1,239 @@
+body {
+    margin: 0 auto;
+    background: black;
+}
+
+p {
+    text-align: center; 
+    font-family: 'Source Code Pro';
+    color: white;
+}
+
+.white-text { color: white; }
+.black-text { color: black; }
+
+#loading {
+    display: flex;
+    align-items: center;
+    background: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    opacity: 1;
+    -webkit-transition: opacity 1000ms linear;
+    transition: opacity 1000ms linear;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#loading img {
+    margin: 0 auto;
+    width: 75px;
+
+}
+#bgvid {
+    position: absolute;
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    display: none;
+    opacity: 1;
+    -webkit-transition: opacity 1000ms linear;
+    transition: opacity 1000ms linear;
+}
+
+#map {
+    width: 100vw;
+    height: calc(100vh - 250px);
+    visibility: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+    #map {
+        height: calc(100vh - 400px);
+    }
+}
+
+#modal {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('./bg_movie.mp4');
+    opacity: 1;
+    -webkit-transition: opacity 1000ms linear;
+    transition: opacity 1000ms linear;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+audio {
+    position: absolute;
+    z-index: 3;
+}
+
+.modal-content {
+    background: rgba(0,0,0,.75);
+    border: 1px solid #1226AA; 
+    color: white;
+    border-radius: 25px;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+}
+
+.email-signup-input {
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px 15px;
+    border-radius: 7px;
+    border: 1px solid #1226AA;
+    background: none;
+    color: white;
+}
+
+.email-signup-input:focus-visible {
+    outline: none;
+}
+
+.email-signup-button {
+    background: black;
+    color: white;
+    border-radius: 7px;
+    border: 1px solid #1226AA;
+    padding: 15px 50px;
+    margin: 0 auto;
+    font-family: 'Source Code Pro' !important;
+}
+
+.email-signup-button:hover {
+    cursor: pointer;
+}
+
+.radio-buttons-container {
+    display: inherit;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
+.radio-buttons-container label {
+    display: block;
+    margin: 0px 25px;
+    font-family: 'Source Code Pro';
+}
+
+.embed-player {
+    background-color: black !important; 
+}
+
+.dsp-icon {
+    width: 24px;
+}
+
+/* HIDE RADIO */
+[type=radio] { 
+position: absolute;
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + svg {
+cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + svg {
+    fill: #1226AA;
+    border-radius: 100% 
+}
+
+.radio-buttons-container {
+    flex: display;
+    align-items: center;
+}
+
+.dots {
+    width: 15%;
+    padding-left: 25px;
+}
+
+.line {
+    width: 65%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 65px;
+    padding: 15px 25px;
+}
+
+.top-bar {
+    display: flex;
+}
+.top-container {
+    flex: .33;
+    align-self: center;
+}
+
+.words-logo { 
+    width: 175px;
+    text-align: center;
+
+}
+
+.mapboxgl-popup-content {
+    padding: 0;
+    background: none;
+}
+
+.mapboxgl-popup .-popup-anchor-top {
+    max-width: none;
+}
+
+#instructions-popup {
+    visibility: hidden;
+    opacity: 0;
+    background: rgba(0,0,0,.4);
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+#instructions-popup p {
+    width: 40%;
+    margin: 0 auto;
+}
+
+#mobile-instructions {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(25,25,25);
+}
+
+#mobile-instructions img {
+    width: 70%;
+}
+
+#mobile-instructions p {
+    font-size: 42px;
+}
