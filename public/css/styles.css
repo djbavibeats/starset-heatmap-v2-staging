@@ -48,6 +48,13 @@ p {
     transition: opacity 1000ms linear;
 }
 
+@media only screen and (max-width: 768px) {
+    #bgvid {
+        height: 100vw;
+        width: 100vh;
+    }
+}
+
 #map {
     width: 100vw;
     height: calc(100vh - 250px);
@@ -67,7 +74,6 @@ p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('../assets/bg_movie.mp4');
     opacity: 1;
     -webkit-transition: opacity 1000ms linear;
     transition: opacity 1000ms linear;
