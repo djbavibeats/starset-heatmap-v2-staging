@@ -66,7 +66,6 @@ if (authenticated) {
         }) 
     })
 } else {
-    console.log("No way!")
     
     document.getElementById("content").innerHTML = `<input id="password" type="password" placeholder="Password" /><button onclick="submitPassword();">Enter</button>`
 }
@@ -75,7 +74,6 @@ function submitPassword() {
     let pass = {
         pass: `${document.getElementById("password").value}`
     }
-    console.log(pass);
     fetch("/auth", {
         method: 'POST',
         mode: 'cors',
