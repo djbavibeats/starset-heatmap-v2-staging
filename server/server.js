@@ -10,6 +10,7 @@ const  router  =  express.Router();
 
 const coordinatesRouter = require("./routes/coordinatesRoutes");
 const mailchimpRouter = require("./routes/mailchimpRoutes");
+const authRoute = require("./routes/authRoute");
 
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 3000;
@@ -24,7 +25,8 @@ app.use(bodyParser.json());
 
 //routes
 app.use("/coordinates", coordinatesRouter);
-app.use("/mailchimp", mailchimpRouter)
+app.use("/mailchimp", mailchimpRouter);
+app.use("/auth", authRoute);
 
 
 

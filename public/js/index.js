@@ -38,29 +38,85 @@ function showError(error) {
     }
 }
 
-$('#bgvid').on('loadeddata', function() {         
-    getLocation().then(() => {
-        renderMap().then(() => {
-            if (getCookie("email_signup")) {
-                checkEmail()
-                    .then(() => {
-                        loadStreaming(dsp);
-                        document.getElementById('loading').style.opacity = 0;
-                        document.getElementById("map").style.visibility = 'visible';
-                        setTimeout(function(){ 
-                            document.getElementById('loading').style.display = 'none'; 
-                            zoomMap();
-                        }, 500)
-                    })
-            } else {
-                document.getElementById('loading').style.opacity = 0;
-                setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
-                document.getElementById("modal").style.display = 'flex';
-                document.getElementById("bgvid").style.display = 'block';                               
-            }
+let entireFuckingSite = document.getElementById("content").innerHTML;
+
+let authenticated = false;
+if (authenticated) {
+    $('#bgvid').on('loadeddata', function() {         
+        getLocation().then(() => {
+            renderMap().then(() => {
+                if (getCookie("email_signup")) {
+                    checkEmail()
+                        .then(() => {
+                            loadStreaming(dsp);
+                            document.getElementById('loading').style.opacity = 0;
+                            document.getElementById("map").style.visibility = 'visible';
+                            setTimeout(function(){ 
+                                document.getElementById('loading').style.display = 'none'; 
+                                zoomMap();
+                            }, 500)
+                        })
+                } else {
+                    document.getElementById('loading').style.opacity = 0;
+                    setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
+                    document.getElementById("modal").style.display = 'flex';
+                    document.getElementById("bgvid").style.display = 'block';                               
+                }
+            })
+        }) 
+    })
+} else {
+    console.log("No way!")
+    
+    document.getElementById("content").innerHTML = `<input id="password" type="password" placeholder="Password" /><button onclick="submitPassword();">Enter</button>`
+}
+
+function submitPassword() {
+    let pass = {
+        pass: `${document.getElementById("password").value}`
+    }
+    console.log(pass);
+    fetch("/auth", {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache', 
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pass)
+    }).then(resp => {
+        resp.json().then(data => { 
+            console.log(data.STATUS);
+            if (data.STATUS === "200") {
+                console.log("YO")
+                document.getElementById("content").innerHTML = entireFuckingSite;
+                $('#bgvid').on('loadeddata', function() {         
+                    getLocation().then(() => {
+                        renderMap().then(() => {
+                            if (getCookie("email_signup")) {
+                                checkEmail()
+                                    .then(() => {
+                                        loadStreaming(dsp);
+                                        document.getElementById('loading').style.opacity = 0;
+                                        document.getElementById("map").style.visibility = 'visible';
+                                        setTimeout(function(){ 
+                                            document.getElementById('loading').style.display = 'none'; 
+                                            zoomMap();
+                                        }, 500)
+                                    })
+                            } else {
+                                document.getElementById('loading').style.opacity = 0;
+                                setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
+                                document.getElementById("modal").style.display = 'flex';
+                                document.getElementById("bgvid").style.display = 'block';                               
+                            }
+                        })
+                    }) 
+                })
+          }  
         })
-    }) 
-})
+    })
+}
 
 let dsp = "";
 let userEmail = "";
