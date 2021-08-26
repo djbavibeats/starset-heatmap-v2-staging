@@ -302,10 +302,13 @@ function loadStreaming(platformName) {
             document.getElementById("dsp").innerHTML = `<iframe src="https://open.spotify.com/embed/track/0KqSyyMHi1HADSaVz8suvI?theme=0" width="100%" height="150" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>`
             break;
         case('apple'):
-            document.getElementById("dsp").innerHTML = `<iframe src="https://embed.music.apple.com/us/album/infected/1565419032?i=1565419042&amp;app=music&amp;itsct=music_box_player&amp;itscg=30200&amp;ct=songs_infected&amp;ls=1" height="150px" frameborder="0" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="autoplay *; encrypted-media *;" style="width: 100%; max-width: 660px; overflow: hidden; border-radius: 10px; background: transparent;"></iframe>` 
+            if (window.innerWidth <= 768) {
+                document.getElementById("map").style.height = "calc(100vh - 190px)"
+            }
+            document.getElementById("dsp").innerHTML = `<iframe src="https://embed.music.apple.com/us/album/infected/1565419032?i=1565419042&amp;app=music&amp;itsct=music_box_player&amp;itscg=30200&amp;ct=songs_infected&amp;ls=1" height="140px" frameborder="0" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="autoplay *; encrypted-media *;" style="width: 100%; overflow: hidden; border-radius: 0px;"></iframe>` 
             break;
         case('tidal'):
-            document.getElementById("dsp").innerHTML = `<div style="left: 0; width: 100%; height: 150px; position: relative;"><iframe src="https://embed.tidal.com/albums/182411161" style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" allowfullscreen allow="encrypted-media;"></iframe></div>` 
+            document.getElementById("dsp").innerHTML = `<div style="left: 0; width: 100%; height: 150px; position: relative;"><iframe src="https://embed.tidal.com/albums/182411161" style="top: 0; left: 0; width: 100%; height: 80px; position: absolute; border: 0;" allowfullscreen allow="encrypted-media;"></iframe></div>` 
             break;
         default:
             break;
