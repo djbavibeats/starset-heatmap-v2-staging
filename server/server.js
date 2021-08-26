@@ -28,6 +28,12 @@ app.use("/coordinates", coordinatesRouter);
 app.use("/mailchimp", mailchimpRouter);
 app.use("/auth", authRoute);
 
+app.set('forceSSLOptions', {
+  enable301Redirects: true,
+  trustXFPHeader: false,
+  httpsPort: 443,
+  sslRequiredMessage: 'SSL Required.'
+});
 
 
 MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
