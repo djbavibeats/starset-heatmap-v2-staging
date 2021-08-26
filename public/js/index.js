@@ -88,6 +88,30 @@ function submitPassword() {
             if (data.STATUS === "200") {
                 console.log("YO")
                 document.getElementById("content").innerHTML = entireFuckingSite;
+                // Check to see if device is accessing site on mobile
+                $(window).resize(function() {
+                    if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                        if (window.matchMedia("(orientation: portrait)").matches) {
+                            // you're in PORTRAIT mode
+                            $('#mobile-instructions').css({
+                                'position': 'absolute',
+                                'width': '100%',
+                                'height': '100vh',
+                                'top': '0',
+                                'z-index': '10',
+                                'display': 'flex'
+                            })
+                        }
+
+                        if (window.matchMedia("(orientation: landscape)").matches) {
+                            // you're in LANDSCAPE mode
+                            $('#mobile-instructions').css({
+                                'display' : 'none'
+                            })
+                        }
+
+                    }
+                }).resize();
                 $('#bgvid').on('loadeddata', function() {         
                     getLocation().then(() => {
                         renderMap().then(() => {
