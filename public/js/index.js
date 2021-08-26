@@ -88,7 +88,7 @@ function renderMap() {
     });
     
     return new Promise((resolve, reject) => {
-        const url = 'https://starset-map.herokuapp.com/coordinates/get';
+        const url = '/coordinates/get';
         map.on('load', () => {
             fetch(url, { method: 'GET' })
                 .then(resp => resp.json())
@@ -252,7 +252,7 @@ function submitForm() {
             email: email,
             dsp: [ dspSubmit ]
         }
-            return fetch('https://starset-map.herokuapp.com/mailchimp/add-member', {
+            return fetch('/mailchimp/add-member', {
                 method: 'POST',
                 mode: 'cors',
                 cache: 'no-cache', 
@@ -263,7 +263,7 @@ function submitForm() {
             }).then(response => {
                 return response.json().then(data => {
                     if (data.status == 400) {
-                        return fetch('https://starset-map.herokuapp.com/mailchimp/update-member', {
+                        return fetch('/mailchimp/update-member', {
                             method: 'POST',
                             mode: 'cors',
                             cache: 'no-cache',
