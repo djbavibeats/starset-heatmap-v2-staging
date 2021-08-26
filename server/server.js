@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const express = require("express");
 const socketIO = require("socket.io");
 const MongoClient = require('mongodb').MongoClient; 
-const wwwhisper = require('connect-wwwhisper');
 require('dotenv').config()
 
 const  router  =  express.Router();
@@ -18,7 +17,6 @@ let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
 
-app.use(wwwhisper());
 app.use(express.static(publicPath))
 
 //bodyparser middleware
