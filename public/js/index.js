@@ -218,6 +218,7 @@ function zoomMap() {
 function showInstructions() {
     $('#instructions-popup').css({ 
         'visibility' : 'visible', 
+        'display' : 'flex',
         'font-size' : '40px',
         'position': 'absolute',
         'top': '0%',
