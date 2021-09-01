@@ -40,35 +40,30 @@ function showError(error) {
 
 // let entireFuckingSite = document.getElementById("content").innerHTML;
 
-// let authenticated = false;
-// if (authenticated) {
-//     $('#bgvid').on('loadeddata', function() {         
-//         getLocation().then(() => {
-//             renderMap().then(() => {
-//                 if (getCookie("email_signup")) {
-//                     checkEmail()
-//                         .then(() => {
-//                             loadStreaming(dsp);
-//                             document.getElementById('loading').style.opacity = 0;
-//                             document.getElementById("map").style.visibility = 'visible';
-//                             setTimeout(function(){ 
-//                                 document.getElementById('loading').style.display = 'none'; 
-//                                 zoomMap();
-//                             }, 500)
-//                         })
-//                 } else {
-//                     document.getElementById('loading').style.opacity = 0;
-//                     setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
-//                     document.getElementById("modal").style.display = 'flex';
-//                     document.getElementById("bgvid").style.display = 'block';                               
-//                 }
-//             })
-//         }) 
-//     })
-// } else {
-    
-//     document.getElementById("content").innerHTML = `<input id="password" type="password" placeholder="Password" /><button onclick="submitPassword();">Enter</button>`
-// }
+
+    $('#bgvid').on('loadeddata', function() {         
+        getLocation().then(() => {
+            renderMap().then(() => {
+                if (getCookie("email_signup")) {
+                    checkEmail()
+                        .then(() => {
+                            loadStreaming(dsp);
+                            document.getElementById('loading').style.opacity = 0;
+                            document.getElementById("map").style.visibility = 'visible';
+                            setTimeout(function(){ 
+                                document.getElementById('loading').style.display = 'none'; 
+                                zoomMap();
+                            }, 500)
+                        })
+                } else {
+                    document.getElementById('loading').style.opacity = 0;
+                    setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
+                    document.getElementById("modal").style.display = 'flex';
+                    document.getElementById("bgvid").style.display = 'block';                               
+                }
+            })
+        }) 
+    })
 
 // function submitPassword() {
 //     let pass = {
