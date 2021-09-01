@@ -38,107 +38,107 @@ function showError(error) {
     }
 }
 
-let entireFuckingSite = document.getElementById("content").innerHTML;
+// let entireFuckingSite = document.getElementById("content").innerHTML;
 
-let authenticated = false;
-if (authenticated) {
-    $('#bgvid').on('loadeddata', function() {         
-        getLocation().then(() => {
-            renderMap().then(() => {
-                if (getCookie("email_signup")) {
-                    checkEmail()
-                        .then(() => {
-                            loadStreaming(dsp);
-                            document.getElementById('loading').style.opacity = 0;
-                            document.getElementById("map").style.visibility = 'visible';
-                            setTimeout(function(){ 
-                                document.getElementById('loading').style.display = 'none'; 
-                                zoomMap();
-                            }, 500)
-                        })
-                } else {
-                    document.getElementById('loading').style.opacity = 0;
-                    setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
-                    document.getElementById("modal").style.display = 'flex';
-                    document.getElementById("bgvid").style.display = 'block';                               
-                }
-            })
-        }) 
-    })
-} else {
+// let authenticated = false;
+// if (authenticated) {
+//     $('#bgvid').on('loadeddata', function() {         
+//         getLocation().then(() => {
+//             renderMap().then(() => {
+//                 if (getCookie("email_signup")) {
+//                     checkEmail()
+//                         .then(() => {
+//                             loadStreaming(dsp);
+//                             document.getElementById('loading').style.opacity = 0;
+//                             document.getElementById("map").style.visibility = 'visible';
+//                             setTimeout(function(){ 
+//                                 document.getElementById('loading').style.display = 'none'; 
+//                                 zoomMap();
+//                             }, 500)
+//                         })
+//                 } else {
+//                     document.getElementById('loading').style.opacity = 0;
+//                     setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
+//                     document.getElementById("modal").style.display = 'flex';
+//                     document.getElementById("bgvid").style.display = 'block';                               
+//                 }
+//             })
+//         }) 
+//     })
+// } else {
     
-    document.getElementById("content").innerHTML = `<input id="password" type="password" placeholder="Password" /><button onclick="submitPassword();">Enter</button>`
-}
+//     document.getElementById("content").innerHTML = `<input id="password" type="password" placeholder="Password" /><button onclick="submitPassword();">Enter</button>`
+// }
 
-function submitPassword() {
-    let pass = {
-        pass: `${document.getElementById("password").value}`
-    }
-    fetch("/auth", {
-        method: 'POST',
-        mode: 'cors',
-        cache: 'no-cache', 
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(pass)
-    }).then(resp => {
-        resp.json().then(data => { 
-            console.log(data.STATUS);
-            if (data.STATUS === "200") {
-                console.log("YO")
-                document.getElementById("content").innerHTML = entireFuckingSite;
-                // Check to see if device is accessing site on mobile
-                $(window).resize(function() {
-                    if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-                        if (window.matchMedia("(orientation: portrait)").matches) {
-                            // you're in PORTRAIT mode
-                            $('#mobile-instructions').css({
-                                'position': 'absolute',
-                                'width': '100%',
-                                'height': '100vh',
-                                'top': '0',
-                                'z-index': '10',
-                                'display': 'flex'
-                            })
-                        }
+// function submitPassword() {
+//     let pass = {
+//         pass: `${document.getElementById("password").value}`
+//     }
+//     fetch("/auth", {
+//         method: 'POST',
+//         mode: 'cors',
+//         cache: 'no-cache', 
+//         headers: {
+//         'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(pass)
+//     }).then(resp => {
+//         resp.json().then(data => { 
+//             console.log(data.STATUS);
+//             if (data.STATUS === "200") {
+//                 console.log("YO")
+//                 document.getElementById("content").innerHTML = entireFuckingSite;
+//                 // Check to see if device is accessing site on mobile
+//                 $(window).resize(function() {
+//                     if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+//                         if (window.matchMedia("(orientation: portrait)").matches) {
+//                             // you're in PORTRAIT mode
+//                             $('#mobile-instructions').css({
+//                                 'position': 'absolute',
+//                                 'width': '100%',
+//                                 'height': '100vh',
+//                                 'top': '0',
+//                                 'z-index': '10',
+//                                 'display': 'flex'
+//                             })
+//                         }
 
-                        if (window.matchMedia("(orientation: landscape)").matches) {
-                            // you're in LANDSCAPE mode
-                            $('#mobile-instructions').css({
-                                'display' : 'none'
-                            })
-                        }
+//                         if (window.matchMedia("(orientation: landscape)").matches) {
+//                             // you're in LANDSCAPE mode
+//                             $('#mobile-instructions').css({
+//                                 'display' : 'none'
+//                             })
+//                         }
 
-                    }
-                }).resize();
-                $('#bgvid').on('loadeddata', function() {         
-                    getLocation().then(() => {
-                        renderMap().then(() => {
-                            if (getCookie("email_signup")) {
-                                checkEmail()
-                                    .then(() => {
-                                        loadStreaming(dsp);
-                                        document.getElementById('loading').style.opacity = 0;
-                                        document.getElementById("map").style.visibility = 'visible';
-                                        setTimeout(function(){ 
-                                            document.getElementById('loading').style.display = 'none'; 
-                                            zoomMap();
-                                        }, 500)
-                                    })
-                            } else {
-                                document.getElementById('loading').style.opacity = 0;
-                                setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
-                                document.getElementById("modal").style.display = 'flex';
-                                document.getElementById("bgvid").style.display = 'block';                               
-                            }
-                        })
-                    }) 
-                })
-          }  
-        })
-    })
-}
+//                     }
+//                 }).resize();
+//                 $('#bgvid').on('loadeddata', function() {         
+//                     getLocation().then(() => {
+//                         renderMap().then(() => {
+//                             if (getCookie("email_signup")) {
+//                                 checkEmail()
+//                                     .then(() => {
+//                                         loadStreaming(dsp);
+//                                         document.getElementById('loading').style.opacity = 0;
+//                                         document.getElementById("map").style.visibility = 'visible';
+//                                         setTimeout(function(){ 
+//                                             document.getElementById('loading').style.display = 'none'; 
+//                                             zoomMap();
+//                                         }, 500)
+//                                     })
+//                             } else {
+//                                 document.getElementById('loading').style.opacity = 0;
+//                                 setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
+//                                 document.getElementById("modal").style.display = 'flex';
+//                                 document.getElementById("bgvid").style.display = 'block';                               
+//                             }
+//                         })
+//                     }) 
+//                 })
+//           }  
+//         })
+//     })
+// }
 
 let dsp = "";
 let userEmail = "";
