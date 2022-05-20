@@ -7,26 +7,28 @@ const { map } = require("bluebird");
 const router = express.Router();
 
 MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
-    var db = client.db('starset')
+    var db = client.db('rebels')
     console.log("New DB Connection")
-    db.collection('coordinates').find().toArray(function (err, result) {
-        if (err) throw err
+    // Get Second Collection of Rebels
+    // db.collection('rebelsTwo').find().toArray(function (err, result) {
+    //     if (err) throw err
     
-        // console.log(result)
-      })
-    router.route("/").get((req, res, next) => {
-        res.set('Content-Type', 'application/json');
-        db.collection('coordinates').find().toArray()
-        .then(results => {
-            let jsonResults = JSON.stringify(results);
-            
-            return res.json({ jsonResults });
-        })
-        .catch(error => console.error(error))
-    })
+    //     // console.log(result)
+    // })
 
-    router.route("/get").get((req, res, next) => {
-        db.collection('coordinates').find().toArray()
+    // router.route("/").get((req, res, next) => {
+    //     res.set('Content-Type', 'application/json');
+    //     db.collection('rebelsTwo').find().toArray()
+    //     .then(results => {
+    //         let jsonResults = JSON.stringify(results);
+            
+    //         return res.json({ jsonResults });
+    //     })
+    //     .catch(error => console.error(error))
+    // })
+
+    router.route("/").get((req, res, next) => {
+        db.collection('rebels').find().toArray()
         .then(results => {
             let json = results[0];
             delete json["_id"]

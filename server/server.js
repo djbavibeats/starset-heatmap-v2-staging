@@ -13,7 +13,7 @@ const mailchimpRouter = require("./routes/mailchimpRoutes");
 const authRoute = require("./routes/authRoute");
 
 const publicPath = path.join(__dirname, "/../public");
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
@@ -54,18 +54,21 @@ app.set('forceSSLOptions', {
 MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
   if (err) throw err
 
-  var db = client.db('starset')
-  const coordinatesCollection = db.collection('coordinates');
+  var db = client.db('rebels')
+  const coordinatesCollection = db.collection('rebels');
 
   db.collection('coordinates').find().toArray(function (err, result) {
     if (err) throw err
 
-    console.log(result)
+    console.log('okay', result)
   })
   
   io.on("connection", (socket) => {
-      console.log("new user connection");
+      console.log("new user connection", socket.handshake.query);
+
       socket.on("storeCoordinates", (coordinates) => {
+        console.log(coordinates)
+          console.log('here')
           coordinatesCollection.insertOne({
               "type": "Feature",
               "geometry": {
@@ -73,6 +76,7 @@ MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
                 "coordinates": [coordinates.longitude, coordinates.latitude]
               }
             })
+       
       })
   
       socket.on("disconnect", () => {

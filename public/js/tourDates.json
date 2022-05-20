@@ -1,0 +1,261 @@
+{
+    "tourDates": [
+        {
+            "city": "kansas city",
+            "state": "missouri",
+            "venue": "the truman",
+            "latitude": "39.0953",
+            "longitude": "-94.5763",
+            "date": "4/12/2022",
+            "color": "rgba(0, 0, 225, 1)",
+            "variation": "one"
+        },
+        {
+            "city": "denver",
+            "state": "colorado",
+            "venue": "summit music hall",
+            "latitude": "39.7534",
+            "longitude": "-104.9952",
+            "date": "4/12/2022",
+            "color": "rgba(225, 225, 225, 1)",
+            "variation": "two"
+        },
+        {
+            "city": "salt lake city",
+            "state": "utah",
+            "venue": "the complex",
+            "latitude": "40.7677",
+            "longitude": "-111.9066",
+            "date": "4/12/2022",
+            "color": "rgba(0, 0, 225, 1)",
+            "variation": "one"
+        },
+        {
+            "city": "portland",
+            "state": "oregon",
+            "venue": "roseland theater",
+            "latitude": "45.5232",
+            "longitude": "-122.6763",
+            "date": "4/13/2022",
+            "color": "rgba(225, 225, 225, 1)",
+            "variation": "two"
+        },
+        {
+            "city": "seattle",
+            "state": "washington",
+            "venue": "neptune theatre",
+            "latitude": "46.3468",
+            "longitude": "-124.0565"
+        },
+        {
+            "city": "boise",
+            "state": "idaho",
+            "venue": "revolution concert house",
+            "latitude": "43.6512",
+            "longitude": "-116.2813"
+        },
+        {
+            "city": "sacramento",
+            "state": "california",
+            "venue": "ace of spades",
+            "latitude": "38.5700",
+            "longitude": "-121.4909"
+        },
+        {
+            "city": "las vegas",
+            "state": "nevada",
+            "venue": "house of blues",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "san diego",
+            "state": "california",
+            "venue": "house of blues",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "santa ana",
+            "state": "california",
+            "venue": "the observatory",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "phoenix",
+            "state": "arizona",
+            "venue": "marquee theatre",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "wichita",
+            "state": "kansas",
+            "venue": "temple live",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "oklahoma city",
+            "state": "oklahoma",
+            "venue": "diamond ballroom",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "little rock",
+            "state": "arkansas",
+            "venue": "music hall",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "atlanta",
+            "state": "georgia",
+            "venue": "the masquerade",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "knoxville",
+            "state": "tennessee",
+            "venue": "the concourse",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "tampa",
+            "state": "florida",
+            "venue": "the orpheum",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "ft lauderdale",
+            "state": "florida",
+            "venue": "revolution live",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "orlando",
+            "state": "florida",
+            "venue": "house of blues",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "chattanooga",
+            "state": "tennessee",
+            "venue": "the signal",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "charleston",
+            "state": "south carolina",
+            "venue": "charleston music hall",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "norfolk",
+            "state": "virginia",
+            "venue": "the norva",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "baltimore",
+            "state": "maryland",
+            "venue": "ram's head live",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "sayreville",
+            "state": "new jersey",
+            "venue": "starland ballroom",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "albany",
+            "state": "new york",
+            "venue": "empire live",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "huntington",
+            "state": "new york",
+            "venue": "the paramount",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "syracuse",
+            "state": "new york",
+            "venue": "sharkey's",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "burlington",
+            "state": "vermont",
+            "venue": "higher ground",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "montreal",
+            "state": "quebec",
+            "venue": "corona theatre",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "toronto",
+            "state": "ontario",
+            "venue": "danforth music hall",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "youngstown",
+            "state": "ohio",
+            "venue": "packard music hall",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "columbus",
+            "state": "ohio",
+            "venue": "kemba live",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "indianapolis",
+            "state": "indiana",
+            "venue": "the vogue",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "joliet",
+            "state": "illinois",
+            "venue": "the forge",
+            "latitude": "",
+            "longitude": ""
+        },
+        {
+            "city": "louisville",
+            "state": "kentucky",
+            "venue": "the mercury ballroom",
+            "latitude": "",
+            "longitude": ""
+        }
+    ]
+}

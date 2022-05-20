@@ -53,7 +53,7 @@ p {
 #map {
     width: 100vw;
     height: calc(100vh - 250px);
-    visibility: hidden;
+    /* visibility: hidden; */
 }
 
 #modal {
@@ -178,6 +178,7 @@ cursor: pointer;
 
 .top-bar {
     display: flex;
+    padding-top: 25px;
 }
 .top-container {
     flex: .33;
