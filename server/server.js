@@ -11,6 +11,7 @@ const  router  =  express.Router();
 const coordinatesRouter = require("./routes/coordinatesRoutes");
 const mailchimpRouter = require("./routes/mailchimpRoutes");
 const authRoute = require("./routes/authRoute");
+const cityRouter = require("./routes/cityRoute")
 
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 4000;
@@ -42,6 +43,7 @@ app.use(bodyParser.json());
 app.use("/coordinates", coordinatesRouter);
 app.use("/mailchimp", mailchimpRouter);
 app.use("/auth", authRoute);
+app.use("/current-city", cityRouter);
 
 app.set('forceSSLOptions', {
   enable301Redirects: true,
@@ -88,3 +90,4 @@ MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
 server.listen(port, () => {
     console.log(`Server is up on port ${port}`);
 })
+

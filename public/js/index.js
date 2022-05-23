@@ -30,55 +30,61 @@ function getLocation() {
 
     userCity = urlParams.base || 'root'
 
-    tourDates.map((date) => {
-        if (date.city === userCity) {
-            cityToPlot = date.city
-            venueToPlot = date.venue
-            latitudeToPlot = date.latitude
-            longitudeToPlot = date.longitude,
-            color = date.color,
-            variation = date.variation
-        } else if (userCity === 'root') {
-            cityToPlot = 'portland',
-            venueToPlot = 'oregon',
-            latitudeToPlot = '45.5232',
-            longitudeToPlot = '-122.6763',
-            color = 'rgba(225, 225, 225, 1)',
-            variation = 'two'
-        }
-    })
+    return fetch('/current-city', {
+        method: 'GET'
+    }).then(resp => {
+        resp.json().then(data => {
+            tourDates.map((date) => {
+                console.log(date)
+                if (date.city === data.city) {
+                    cityToPlot = date.city
+                    venueToPlot = date.venue
+                    latitudeToPlot = date.latitude
+                    longitudeToPlot = date.longitude,
+                    color = date.color
 
-    return new Promise((resolve, reject) => {  
-        socket.emit('storeCoordinates', { 
-            latitude: latitudeToPlot, 
-            longitude: longitudeToPlot,
-            color: color,
-            variation: variation
+                    return new Promise((resolve, reject) => {  
+                        socket.emit('storeCoordinates', { 
+                            latitude: latitudeToPlot, 
+                            longitude: longitudeToPlot,
+                            color: color
+                        })
+                        resolve()
+                    })
+                } else if (userCity === 'root') {
+                    cityToPlot = 'portland',
+                    venueToPlot = 'oregon',
+                    latitudeToPlot = '45.5232',
+                    longitudeToPlot = '-122.6763',
+                    color = 'rgba(225, 225, 225, 1)'
+                }
+            })
         })
-        resolve()
     })
+    
+
 }
 
 $('#bgvid').on('loadeddata', function() {   
     getLocation().then(() => {
         renderMap().then(() => {
-            // if (getCookie("email_signup")) {
-            //     checkEmail()
-            //         .then(() => {
-            //             loadStreaming(dsp);
-            //             document.getElementById('loading').style.opacity = 0
-            //             document.getElementById("map").style.visibility = 'visible'
-            //             setTimeout(function(){ 
-            //                 document.getElementById('loading').style.display = 'none'
-            //                 // zoomMap()
-            //             }, 500)
-            //         })
-            // } else {
+            if (getCookie("email_signup")) {
+                checkEmail()
+                    .then(() => {
+                        loadStreaming(dsp);
+                        document.getElementById('loading').style.opacity = 0
+                        document.getElementById("map").style.visibility = 'visible'
+                        setTimeout(function(){ 
+                            document.getElementById('loading').style.display = 'none'
+                            // zoomMap()
+                        }, 500)
+                    })
+            } else {
                 document.getElementById('loading').style.opacity = 0
                 setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500)
                 document.getElementById("modal").style.display = 'flex'
                 // document.getElementById("bgvid").style.display = 'block'                              
-            // }
+            }
         })
     })      
 })
@@ -112,39 +118,41 @@ function renderMap() {
             fetch(url, { method: 'GET' })
                 .then(resp => resp.json())
                 .then(data => {
+                    console.log(data)
                     map.getSource('BMIS').setData(data)
                     resolve();
+                    // Blue BMIS
                 });
+                
+                map.addSource('BMIS', { type: 'geojson', data: url });   
+                map.addLayer({
+                    'id': 'trees-heat',
+                    'type': 'heatmap',
+                    'source': 'BMIS',
+                    'maxzoom': 15,
+                    'paint': {
+                        'heatmap-color': 
+                        [
+                            "interpolate",
+                            ["linear"],
+                            ["heatmap-density"],
+                            0, 'rgba(25, 0, 225, 0)',
+                            .05, 'rgba(25, 0, 225, 1)',
+                            .075, 'rgba(25, 0, 225, 0)',
+                            1, 'rgba(25, 0, 225, 1)'
+                        ],
+                        'heatmap-weight': [
+                            'interpolate',
+                            ['linear'],
+                            ['get', 'mag'],
+                            0, 1
+                        ]
+    
+                    }
+                        
+                }, 'waterway-label');
                 console.log(url)
             
-            // Blue BMIS
-            map.addSource('BMIS', { type: 'geojson', data: url });   
-            map.addLayer({
-                'id': 'trees-heat',
-                'type': 'heatmap',
-                'source': 'BMIS',
-                'maxzoom': 15,
-                'paint': {
-                    'heatmap-color': 
-                    [
-                        "interpolate",
-                        ["linear"],
-                        ["heatmap-density"],
-                        0, 'rgba(25, 0, 225, 0)',
-                        .05, 'rgba(25, 0, 225, 1)',
-                        .075, 'rgba(25, 0, 225, 0)',
-                        1, 'rgba(25, 0, 225, 1)'
-                    ],
-                    'heatmap-weight': [
-                        'interpolate',
-                        ['linear'],
-                        ['get', 'mag'],
-                        0, 1
-                    ]
-
-                }
-                    
-            }, 'waterway-label');
           
            
             let currentDate = new Date()
