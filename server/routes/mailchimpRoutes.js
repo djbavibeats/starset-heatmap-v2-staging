@@ -19,7 +19,7 @@ router.route("/add-member").post((req, res, next) => {
     MailchimpClient.lists.addListMember("6ad68f1bc1", {
           email_address: req.body.email,
           status: "subscribed",
-          tags: req.body.dsp
+          tags: req.body.tag
     }).then(result => {
         console.log(result)
         return res.send(result)
@@ -44,12 +44,12 @@ router.route("/check-member").post((req, res, next) => {
 router.route("/update-member").post(async (req, res, next) => {
     
     let hash = crypto.createHash('md5').update(req.body.email).digest("hex");
-    console.log(req.body.dsp);
+    console.log(req.body);
 
     var raw = JSON.stringify({
         "tags": [
           {
-            "name": `${req.body.dsp}`,
+            "name": `${req.body.tag}`,
             "status": "active"
           }
         ]

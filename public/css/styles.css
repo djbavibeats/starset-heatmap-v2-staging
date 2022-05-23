@@ -64,11 +64,12 @@ p {
     right: 0;
     bottom: 0;
     opacity: 1;
-    -webkit-transition: opacity 1000ms linear;
-    transition: opacity 1000ms linear;
+    -webkit-transition: opacity 1000ms linear, visibility 1000ms linear;
+    transition: opacity 1000ms linear, visibility 1000ms linear;
     display: none;
     align-items: center;
     justify-content: center;
+    background: black;
 }
 
 audio {
@@ -81,7 +82,7 @@ audio {
     border: 1px solid #1226AA; 
     color: white;
     border-radius: 25px;
-    width: 45%;
+    width: 85%;
     display: flex;
     flex-direction: column;
     padding: 50px;
@@ -95,6 +96,7 @@ audio {
     border: 1px solid #1226AA;
     background: none;
     color: white;
+    margin-bottom: 25px;
 }
 
 .email-signup-input:focus-visible {
@@ -179,10 +181,15 @@ cursor: pointer;
 .top-bar {
     display: flex;
     padding-top: 25px;
+    padding-bottom: 25px;
 }
 .top-container {
     flex: .33;
     align-self: center;
+}
+
+.top-container.center {
+    flex: .5;
 }
 
 .words-logo { 

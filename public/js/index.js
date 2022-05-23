@@ -62,104 +62,32 @@ function getLocation() {
 $('#bgvid').on('loadeddata', function() {   
     getLocation().then(() => {
         renderMap().then(() => {
-            if (getCookie("email_signup")) {
-                checkEmail()
-                    .then(() => {
-                        loadStreaming(dsp);
-                        document.getElementById('loading').style.opacity = 0
-                        document.getElementById("map").style.visibility = 'visible'
-                        setTimeout(function(){ 
-                            document.getElementById('loading').style.display = 'none'
-                            // zoomMap()
-                        }, 500)
-                    })
-            } else {
+            // if (getCookie("email_signup")) {
+            //     checkEmail()
+            //         .then(() => {
+            //             loadStreaming(dsp);
+            //             document.getElementById('loading').style.opacity = 0
+            //             document.getElementById("map").style.visibility = 'visible'
+            //             setTimeout(function(){ 
+            //                 document.getElementById('loading').style.display = 'none'
+            //                 // zoomMap()
+            //             }, 500)
+            //         })
+            // } else {
                 document.getElementById('loading').style.opacity = 0
                 setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500)
                 document.getElementById("modal").style.display = 'flex'
-                document.getElementById("bgvid").style.display = 'block'                              
-            }
+                // document.getElementById("bgvid").style.display = 'block'                              
+            // }
         })
     })      
 })
 
-// function submitPassword() {
-//     let pass = {
-//         pass: `${document.getElementById("password").value}`
-//     }
-//     fetch("/auth", {
-//         method: 'POST',
-//         mode: 'cors',
-//         cache: 'no-cache', 
-//         headers: {
-//         'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(pass)
-//     }).then(resp => {
-//         resp.json().then(data => { 
-//             console.log(data.STATUS);
-//             if (data.STATUS === "200") {
-//                 console.log("YO")
-//                 document.getElementById("content").innerHTML = entireFuckingSite;
-//                 // Check to see if device is accessing site on mobile
-//                 $(window).resize(function() {
-//                     if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-//                         if (window.matchMedia("(orientation: portrait)").matches) {
-//                             // you're in PORTRAIT mode
-//                             $('#mobile-instructions').css({
-//                                 'position': 'absolute',
-//                                 'width': '100%',
-//                                 'height': '100vh',
-//                                 'top': '0',
-//                                 'z-index': '10',
-//                                 'display': 'flex'
-//                             })
-//                         }
-
-//                         if (window.matchMedia("(orientation: landscape)").matches) {
-//                             // you're in LANDSCAPE mode
-//                             $('#mobile-instructions').css({
-//                                 'display' : 'none'
-//                             })
-//                         }
-
-//                     }
-//                 }).resize();
-//                 $('#bgvid').on('loadeddata', function() {         
-//                     getLocation().then(() => {
-//                         renderMap().then(() => {
-//                             if (getCookie("email_signup")) {
-//                                 checkEmail()
-//                                     .then(() => {
-//                                         loadStreaming(dsp);
-//                                         document.getElementById('loading').style.opacity = 0;
-//                                         document.getElementById("map").style.visibility = 'visible';
-//                                         setTimeout(function(){ 
-//                                             document.getElementById('loading').style.display = 'none'; 
-//                                             zoomMap();
-//                                         }, 500)
-//                                     })
-//                             } else {
-//                                 document.getElementById('loading').style.opacity = 0;
-//                                 setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500);
-//                                 document.getElementById("modal").style.display = 'flex';
-//                                 document.getElementById("bgvid").style.display = 'block';                               
-//                             }
-//                         })
-//                     }) 
-//                 })
-//           }  
-//         })
-//     })
-// }
-
-let dsp = "";
 let userEmail = "";
 
 function checkEmail() {
     return new Promise((resolve, reject) => {
         userEmail = getCookie("email_signup")
-        dsp = getCookie("dsp")
         resolve()
     })
 } 
@@ -184,7 +112,6 @@ function renderMap() {
             fetch(url, { method: 'GET' })
                 .then(resp => resp.json())
                 .then(data => {
-                    console.log(data)
                     map.getSource('BMIS').setData(data)
                     resolve();
                 });
@@ -245,143 +172,96 @@ function renderMap() {
                 },
                 'paint': {
                     'line-color': 'rgba(25, 0, 225, 1)',
-                    // 'line-color': 'rgba(225, 225, 225, 1)',
                     'line-width': 4
                 }
-            }, 'waterway-label');
-            // map.on('click', 'trees-point', function(e) {
-            //     new mapboxgl.Popup()
-            //         .setLngLat(e.features[0].geometry.coordinates)
-            //         .setHTML(`<div id="video-content" style="background: black;">
-            //             <div></div>
-            //         </div>`)
-            //         .on('open', () => {
-            //             document.getElementById('video-content').innerHTML = `<div>
-            //                 <img style="width: 240px; height: 240px;" src="./assets/bmi_located.gif" />
-            //                 <div class="social-modal-button-wrapper">
-            //                     <button class="social-modal-button" onclick="socialModal();">Share</button>
-            //                 </div>
-            //             </div>`
-            //         })
-            //         .addTo(map)
-            // })                        
+            }, 'waterway-label');                       
         })
     });
 }
 
 let isAtStart = true;
 
-// function socialModal() {
-//     $('#social-modal-wrapper').css({ 'display': 'block' })
-//     $('#social-modal').css({
-//         'display': 'flex',
-//         'opacity': '1'
-//     })
-// }
-
-function zoomMap() {
-    const start = [0, 0];
-    const end = [37.0902, -95.7129];
-    const target = isAtStart ? end : start;
-    
-    isAtStart = !isAtStart;
-    
-    // map.once('moveend',()=>{
-    //     showInstructions();
-    // })
-
-    map.flyTo({
-        center: target,
-        zoom: 8,
-        bearing: 0,
-        speed: .5,
-        curve: 1,
-        easing: (t) => t,
-        essential: true
-    });
-};
 
 function showInstructions() {
-    $('#instructions-popup').css({ 
-        'visibility' : 'visible', 
-        'display' : 'flex',
-        'font-size' : '40px',
-        'position': 'absolute',
-        'top': '0%',
-        'width': '100%',
-        'height': '100%'
-    })
-    $('#instructions-popup').animate({
-        'opacity' : 1
-    }, 2000, function() {
-        $( window ).click(() => {
-            $('#instructions-popup').animate({
-            'opacity' : 0
-            }, 2000, function() {
-                $('#instructions-popup').css({
-                    'display' : 'none'
-                })
-            })
-        })
-    })
+    // $('#instructions-popup').css({ 
+    //     'visibility' : 'visible', 
+    //     'display' : 'flex',
+    //     'font-size' : '40px',
+    //     'position': 'absolute',
+    //     'top': '0%',
+    //     'width': '100%',
+    //     'height': '100%'
+    // })
+    // $('#instructions-popup').animate({
+    //     'opacity' : 1
+    // }, 2000, function() {
+    //     $( window ).click(() => {
+    //         $('#instructions-popup').animate({
+    //         'opacity' : 0
+    //         }, 2000, function() {
+    //             $('#instructions-popup').css({
+    //                 'display' : 'none'
+    //             })
+    //         })
+    //     })
+    // })
 }
 
-// function submitForm() {
-//     let email = document.getElementById('email').value;
-//     let dspSubmit = document.querySelector('input[name = "dsp"]:checked').value;
+function submitForm() {
+    let email = document.getElementById('email').value;
     
-//     document.cookie = `email_signup=${email}`;
-//     document.cookie = `dsp=${dspSubmit}`;
+    document.cookie = `email_signup=${email}`;
 
-//     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-//         let info = {
-//             email: email,
-//             dsp: [ dspSubmit ]
-//         }
-//             return fetch('/mailchimp/add-member', {
-//                 method: 'POST',
-//                 mode: 'cors',
-//                 cache: 'no-cache', 
-//                 headers: {
-//                 'Content-Type': 'application/json'
-//                 },
-//                 body: JSON.stringify(info)
-//             }).then(response => {
-//                 return response.json().then(data => {
-//                     if (data.status == 400) {
-//                         return fetch('/mailchimp/update-member', {
-//                             method: 'POST',
-//                             mode: 'cors',
-//                             cache: 'no-cache',
-//                             headers: {
-//                                 'Content-Type': 'application/json'
-//                             },
-//                             body: JSON.stringify(info)
-//                         }).then(response => {
-//                             loadStreaming(dspSubmit);
-//                             document.getElementById("modal").style.opacity = 0;
-//                             document.getElementById("modal").style.display = 'none';
-//                             document.getElementById("bgvid").style.opacity = 0;
-//                             document.getElementById("bgvid").style.display = 'none';
-//                             document.getElementById("map").style.visibility = 'visible';
-//                             zoomMap();
-//                         })
-//                     } else {
-//                         loadStreaming(dspSubmit);
-//                         document.getElementById("modal").style.opacity = 0;
-//                         document.getElementById("modal").style.display = 'none';
-//                         document.getElementById("bgvid").style.opacity = 0;
-//                         document.getElementById("bgvid").style.display = 'none';
-//                         document.getElementById("map").style.visibility = 'visible';
-//                         zoomMap();
-//                     }
-//                 })
-//             })
-//     } else {
-//         alert("You have entered an invalid email address!")
-//         return false;
-//     }
-// }
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        let info = {
+            email: email,
+            tag: 'earthriseTag'
+        }
+        console.log(info)
+            return fetch('/mailchimp/add-member', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache', 
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(info)
+            }).then(response => {
+                console.log(response)
+                return response.json().then(data => {
+                    if (data.status == 400) {
+                        return fetch('/mailchimp/update-member', {
+                            method: 'POST',
+                            mode: 'cors',
+                            cache: 'no-cache',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(info)
+                        }).then(response => {
+                            console.log(response)
+                            document.getElementById("modal").style.opacity = 0;
+                            // document.getElementById("modal").style.display = 'none';
+                            document.getElementById("modal").style.visibility = 'hidden';
+                            document.getElementById("bgvid").style.opacity = 0;
+                            document.getElementById("bgvid").style.display = 'none';
+                            document.getElementById("map").style.visibility = 'visible';
+                        })
+                    } else {
+                        console.log(response)
+                        document.getElementById("modal").style.opacity = 0;
+                        document.getElementById("modal").style.display = 'none';
+                        document.getElementById("bgvid").style.opacity = 0;
+                        document.getElementById("bgvid").style.display = 'none';
+                        document.getElementById("map").style.visibility = 'visible';
+                    }
+                })
+            })
+    } else {
+        alert("You have entered an invalid email address!")
+        return false;
+    }
+}
 
 function loadStreaming(platformName) {
     switch(platformName) {
@@ -419,29 +299,29 @@ function getCookie(cname) {
 }
 
 // Check to see if device is accessing site on mobile
-$(window).resize(function() {
-    if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        if (window.matchMedia("(orientation: portrait)").matches) {
-            // you're in PORTRAIT mode
-            $('#mobile-instructions').css({
-                'position': 'absolute',
-                'width': '100%',
-                'height': '100vh',
-                'top': '0',
-                'z-index': '10',
-                'display': 'flex'
-            })
-        }
+// $(window).resize(function() {
+//     if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+//         if (window.matchMedia("(orientation: portrait)").matches) {
+//             // you're in PORTRAIT mode
+//             $('#mobile-instructions').css({
+//                 'position': 'absolute',
+//                 'width': '100%',
+//                 'height': '100vh',
+//                 'top': '0',
+//                 'z-index': '10',
+//                 'display': 'flex'
+//             })
+//         }
 
-        if (window.matchMedia("(orientation: landscape)").matches) {
-            // you're in LANDSCAPE mode
-            $('#mobile-instructions').css({
-                'display' : 'none'
-            })
-        }
+//         if (window.matchMedia("(orientation: landscape)").matches) {
+//             // you're in LANDSCAPE mode
+//             $('#mobile-instructions').css({
+//                 'display' : 'none'
+//             })
+//         }
 
-    }
-}).resize();
+//     }
+// }).resize();
 
 window.onclick = function(event) {
     var socialModalWrapper = document.getElementById('social-modal-wrapper');
