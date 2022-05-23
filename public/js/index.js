@@ -40,14 +40,12 @@ function getLocation() {
                     cityToPlot = date.city
                     venueToPlot = date.venue
                     latitudeToPlot = date.latitude
-                    longitudeToPlot = date.longitude,
-                    color = date.color
+                    longitudeToPlot = date.longitude
 
                     return new Promise((resolve, reject) => {  
                         socket.emit('storeCoordinates', { 
                             latitude: latitudeToPlot, 
-                            longitude: longitudeToPlot,
-                            color: color
+                            longitude: longitudeToPlot
                         })
                         resolve()
                     })
@@ -55,8 +53,7 @@ function getLocation() {
                     cityToPlot = 'portland',
                     venueToPlot = 'oregon',
                     latitudeToPlot = '45.5232',
-                    longitudeToPlot = '-122.6763',
-                    color = 'rgba(225, 225, 225, 1)'
+                    longitudeToPlot = '-122.6763'
                 }
             })
         })
