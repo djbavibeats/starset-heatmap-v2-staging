@@ -103,7 +103,7 @@ audio {
     outline: none;
 }
 
-.email-signup-button {
+.email-signup-button, .register-button, .close-modal-button {
     background: black;
     color: white;
     border-radius: 7px;
@@ -111,6 +111,16 @@ audio {
     padding: 15px 50px;
     margin: 0 auto;
     font-family: 'Source Code Pro' !important;
+}
+
+.register-button, .close-modal-button {
+    display: flex;
+    padding: 15px 35px;
+}
+
+.register-close-wrapper {
+    display: flex;
+    align-items: center;
 }
 
 .email-signup-button:hover {

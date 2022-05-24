@@ -65,7 +65,7 @@ function getLocation() {
 $('#bgvid').on('loadeddata', function() {   
     getLocation().then(() => {
         renderMap().then(() => {
-            if (getCookie("email_signup")) {
+            if (!getCookie("email_signup")) {
                 checkEmail()
                     .then(() => {
                         loadStreaming(dsp);
@@ -212,6 +212,41 @@ function showInstructions() {
     // })
 }
 
+function hideModal() {
+    document.getElementById("modal").style.opacity = 0;
+    // document.getElementById("modal").style.display = 'none';
+    document.getElementById("modal").style.visibility = 'hidden';
+    document.getElementById("bgvid").style.opacity = 0;
+    document.getElementById("bgvid").style.display = 'none';
+    document.getElementById("map").style.visibility = 'visible';
+}
+
+function generateID(email) {
+    console.log(email)
+    let info = {
+        email: email
+    }
+    let serialNumber = ""
+    return fetch('/auth/register', {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(info)
+    }).then(response => response.json().then(data => {
+        console.log(data)
+        serialNumber = data.serialNumber
+        let responseMessage = `Thank you for registering. Your BMI Serial Number is #${serialNumber}, please take a screenshot of this for ease of access. Enjoy the demonstration.`
+        let closeModalButton = `<button class="close-modal-button" onclick="hideModal();">Close Modal</button>`
+        document.getElementById('responseMessage').innerHTML = `<div style="margin: 0 auto;">
+            <p>${responseMessage}</p>
+            ${closeModalButton}
+        </div>`
+    }))
+}
+
 function submitForm() {
     let email = document.getElementById('email').value;
     
@@ -220,9 +255,8 @@ function submitForm() {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         let info = {
             email: email,
-            tag: 'earthriseTag'
+            tag: 'devolution'
         }
-        console.log(info)
             return fetch('/mailchimp/add-member', {
                 method: 'POST',
                 mode: 'cors',
@@ -232,7 +266,6 @@ function submitForm() {
                 },
                 body: JSON.stringify(info)
             }).then(response => {
-                console.log(response)
                 return response.json().then(data => {
                     if (data.status == 400) {
                         return fetch('/mailchimp/update-member', {
@@ -244,14 +277,48 @@ function submitForm() {
                             },
                             body: JSON.stringify(info)
                         }).then(response => {
-                            console.log(response)
-                            document.getElementById("modal").style.opacity = 0;
-                            // document.getElementById("modal").style.display = 'none';
-                            document.getElementById("modal").style.visibility = 'hidden';
-                            document.getElementById("bgvid").style.opacity = 0;
-                            document.getElementById("bgvid").style.display = 'none';
-                            document.getElementById("map").style.visibility = 'visible';
-                        })
+                                return fetch('/auth/users', {
+                                    method: 'POST',
+                                    mode: 'cors',
+                                    cache: 'no-cache',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(info)
+                                }).then(response => {
+                                    let responseMessage = ""
+                                    let registerButton = ""
+                                    let closeModalButton = `<button class="close-modal-button" onclick="hideModal();">Close Modal</button>`
+                                    return response.json().then(userData => {
+                                        if (userData.status === '200') {
+                                            console.log(userData)
+                                            responseMessage = `Welcome back BMI #${userData.serialNumber}, we're glad you were able to make it to this evening's demonstration.`
+                                            document.getElementById('responseMessage').innerHTML = `<div style="margin: 0 auto;">
+                                                <p>${responseMessage}</p>
+                                                ${closeModalButton}
+                                            </div>`
+                                            document.querySelector('.email-signup-button').style.display = 'none'
+                                            document.querySelector('.email-signup-input').style.display = 'none'
+                                            document.querySelector('.email-signup-text').style.display = 'none'
+                              
+                                        } else if (userData.status === '404') {
+                                            console.log(info)
+                                            responseMessage = `We're glad you were able to make it to this evening's demonstration.<br /><br /> It looks like you have not yet registered your BMI device. Would you like to do that now?`
+                                            registerButton = `<button class="register-button" onclick="generateID('` + info.email + `');">Register</button>`
+                                            document.getElementById('responseMessage').innerHTML = `<div>
+                                                <p>${responseMessage}</p>
+                                                <div class="register-close-wrapper">
+                                                ${registerButton}
+                                                ${closeModalButton}
+                                                </div>
+                                            </div>`
+                                            document.querySelector('.email-signup-button').style.display = 'none'
+                                            document.querySelector('.email-signup-input').style.display = 'none'
+                                            document.querySelector('.email-signup-text').style.display = 'none'
+                                        }
+                                    })
+                                })
+                            })
                     } else {
                         console.log(response)
                         document.getElementById("modal").style.opacity = 0;

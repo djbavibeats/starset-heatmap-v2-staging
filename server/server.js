@@ -62,15 +62,12 @@ MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
   db.collection('coordinates').find().toArray(function (err, result) {
     if (err) throw err
 
-    console.log('okay', result)
   })
   
   io.on("connection", (socket) => {
       console.log("new user connection", socket.handshake.query);
 
       socket.on("storeCoordinates", (coordinates) => {
-        console.log(coordinates)
-          console.log('here')
           coordinatesCollection.insertOne({
               "type": "Feature",
               "geometry": {

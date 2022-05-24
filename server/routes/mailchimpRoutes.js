@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const { json } = require("body-parser");
 const { map } = require("bluebird");
 const MailchimpClient = require("@mailchimp/mailchimp_marketing");
+// const MailchimpTransactional = require('@mailchimp/mailchimp_transactional')(process.env.MAILCHIMP_API_KEY);
 const crypto = require('crypto')
 const fetch = require('node-fetch');
 
@@ -15,11 +16,12 @@ MailchimpClient.setConfig({
   
 router.route("/add-member").post((req, res, next) => {
     res.set('Content-Type', 'application/json');
-    console.log("Request", req.body);
+
+    // MailchimpClient.lists.addListMember("16effdaabd", {
     MailchimpClient.lists.addListMember("6ad68f1bc1", {
           email_address: req.body.email,
           status: "subscribed",
-          tags: req.body.tag
+          tags: [ req.body.tag ]
     }).then(result => {
         console.log(result)
         return res.send(result)
@@ -35,7 +37,6 @@ router.route("/check-member").post((req, res, next) => {
     res.set('Content-Type', 'application/json');
     return MailchimpClient.lists.getListMembersInfo("6ad68f1bc1")
         .then(resp => {
-            console.log("success", resp);
             return res.send(resp)
         })
     .catch(err => console.log(err));
@@ -44,7 +45,6 @@ router.route("/check-member").post((req, res, next) => {
 router.route("/update-member").post(async (req, res, next) => {
     
     let hash = crypto.createHash('md5').update(req.body.email).digest("hex");
-    console.log(req.body);
 
     var raw = JSON.stringify({
         "tags": [
@@ -65,15 +65,35 @@ router.route("/update-member").post(async (req, res, next) => {
         redirect: 'follow'
     };
       
-
+    // fetch(`https://us7.api.mailchimp.com/3.0/lists/16effdaabd/members/${hash}/tags`, requestOptions)
     fetch(`https://us7.api.mailchimp.com/3.0/lists/6ad68f1bc1/members/${hash}/tags`, requestOptions)
         .then(response => response.text())
         .then(result => { 
-            console.log("Result", result)
             return res.send(result);
         })
     .catch(error => console.log('error', error));
     
 })
+
+// router.route("/send-email").post((req, res, next) => {
+//     const message = {
+//         "html": `<div>
+//             <p>Check out the new Starset Live video!</p>
+//         </div>`,
+//         "subject": "DEVOLUTION LIVE",
+//         "from_email": "starset@fearlessrecords.com",
+//         "from_name": "STARSET",
+//         "to": [ {
+//             'email': `${req.body.email}`
+//         } ],
+//     }
+//     const run = async () => {
+//       const response = await MailchimpTransactional.messages.send({ message: message });
+//       console.log(response);
+//     };
+    
+//     run();
+    
+// })
 
 module.exports = router;
