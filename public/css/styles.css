@@ -67,6 +67,7 @@ p {
     -webkit-transition: opacity 1000ms linear, visibility 1000ms linear;
     transition: opacity 1000ms linear, visibility 1000ms linear;
     /* display: none; */
+    display: flex;
     align-items: center;
     justify-content: center;
     background: black;
