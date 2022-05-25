@@ -6,7 +6,6 @@ let userCity
 let cityToPlot
 let latitudeToPlot
 let longitudeToPlot
-let color
 
 fetch("./js/tourDates.json")
     .then(res => res.json())
@@ -35,7 +34,6 @@ function getLocation() {
     }).then(resp => {
         resp.json().then(data => {
             tourDates.map((date) => {
-                console.log(date)
                 if (date.city === data.city) {
                     cityToPlot = date.city
                     venueToPlot = date.venue
@@ -49,11 +47,6 @@ function getLocation() {
                         })
                         resolve()
                     })
-                } else if (userCity === 'root') {
-                    cityToPlot = 'portland',
-                    venueToPlot = 'oregon',
-                    latitudeToPlot = '45.5232',
-                    longitudeToPlot = '-122.6763'
                 }
             })
         })
@@ -73,14 +66,12 @@ $('#bgvid').on('loadeddata', function() {
                         document.getElementById("map").style.visibility = 'visible'
                         setTimeout(function(){ 
                             document.getElementById('loading').style.display = 'none'
-                            // zoomMap()
                         }, 500)
                     })
             } else {
                 document.getElementById('loading').style.opacity = 0
                 setTimeout(function(){ document.getElementById('loading').style.display = 'none'; }, 500)
-                document.getElementById("modal").style.display = 'flex'
-                // document.getElementById("bgvid").style.display = 'block'                              
+                document.getElementById("modal").style.display = 'flex'                            
             }
         })
     })      
@@ -115,11 +106,9 @@ function renderMap() {
             fetch(url, { method: 'GET' })
                 .then(resp => resp.json())
                 .then(data => {
-                    console.log(data)
                     map.getSource('BMIS').setData(data)
-                    resolve();
-                    // Blue BMIS
-                });
+                    resolve()
+                })
                 
                 map.addSource('BMIS', { type: 'geojson', data: url });   
                 map.addLayer({
@@ -147,8 +136,7 @@ function renderMap() {
     
                     }
                         
-                }, 'waterway-label');
-                console.log(url)
+                }, 'waterway-label')
             
           
            
@@ -179,50 +167,22 @@ function renderMap() {
                     'line-color': 'rgba(25, 0, 225, 1)',
                     'line-width': 4
                 }
-            }, 'waterway-label');                       
+            }, 'waterway-label')                       
         })
     });
 }
 
 let isAtStart = true;
 
-
-function showInstructions() {
-    // $('#instructions-popup').css({ 
-    //     'visibility' : 'visible', 
-    //     'display' : 'flex',
-    //     'font-size' : '40px',
-    //     'position': 'absolute',
-    //     'top': '0%',
-    //     'width': '100%',
-    //     'height': '100%'
-    // })
-    // $('#instructions-popup').animate({
-    //     'opacity' : 1
-    // }, 2000, function() {
-    //     $( window ).click(() => {
-    //         $('#instructions-popup').animate({
-    //         'opacity' : 0
-    //         }, 2000, function() {
-    //             $('#instructions-popup').css({
-    //                 'display' : 'none'
-    //             })
-    //         })
-    //     })
-    // })
-}
-
 function hideModal() {
-    document.getElementById("modal").style.opacity = 0;
-    // document.getElementById("modal").style.display = 'none';
-    document.getElementById("modal").style.visibility = 'hidden';
-    document.getElementById("bgvid").style.opacity = 0;
-    document.getElementById("bgvid").style.display = 'none';
-    document.getElementById("map").style.visibility = 'visible';
+    document.getElementById("modal").style.opacity = 0
+    document.getElementById("modal").style.visibility = 'hidden'
+    document.getElementById("bgvid").style.opacity = 0
+    document.getElementById("bgvid").style.display = 'none'
+    document.getElementById("map").style.visibility = 'visible'
 }
 
 function generateID(email) {
-    console.log(email)
     let info = {
         email: email
     }
@@ -236,7 +196,6 @@ function generateID(email) {
         },
         body: JSON.stringify(info)
     }).then(response => response.json().then(data => {
-        console.log(data)
         serialNumber = data.serialNumber
         let responseMessage = `Thank you for registering. Your BMI Serial Number is #${serialNumber}, please take a screenshot of this for ease of access. Enjoy the demonstration.`
         let closeModalButton = `<button class="close-modal-button" onclick="hideModal();">Close Modal</button>`
@@ -247,16 +206,63 @@ function generateID(email) {
     }))
 }
 
+function checkBMIStatus(info) {
+    // Check if user has a BMI Serial Number
+    return fetch('/auth/users', {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(info)
+    }).then(response => {
+        let responseMessage = ""
+        let registerButton = ""
+        let closeModalButton = `<button class="close-modal-button" onclick="hideModal();">Close Modal</button>`
+        return response.json().then(userData => {
+            // User has already registered their serial number
+            if (userData.status === '200') {
+                responseMessage = `Welcome back BMI #${userData.serialNumber}, we're glad you were able to make it to this evening's demonstration.`
+                document.getElementById('responseMessage').innerHTML = `<div style="margin: 0 auto;">
+                    <p>${responseMessage}</p>
+                    ${closeModalButton}
+                </div>`
+                document.querySelector('.email-signup-button').style.display = 'none'
+                document.querySelector('.email-signup-input').style.display = 'none'
+                document.querySelector('.email-signup-text').style.display = 'none'
+            
+            // User has not registered their serial number
+            } else if (userData.status === '404') {
+                responseMessage = `We're glad you were able to make it to this evening's demonstration.<br /><br /> It looks like you have not yet registered your BMI device. Would you like to do that now?`
+                registerButton = `<button class="register-button" onclick="generateID('` + info.email + `');">Register</button>`
+                document.getElementById('responseMessage').innerHTML = `<div>
+                    <p>${responseMessage}</p>
+                    <div class="register-close-wrapper">
+                    ${registerButton}
+                    ${closeModalButton}
+                    </div>
+                </div>`
+                document.querySelector('.email-signup-button').style.display = 'none'
+                document.querySelector('.email-signup-input').style.display = 'none'
+                document.querySelector('.email-signup-text').style.display = 'none'
+            }
+        })
+    })
+}
+
 function submitForm() {
     let email = document.getElementById('email').value;
     
     document.cookie = `email_signup=${email}`;
 
+    // Regex check for valid email format
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         let info = {
             email: email,
             tag: 'devolution'
         }
+            // Attempt to add user to Mailchimp 
             return fetch('/mailchimp/add-member', {
                 method: 'POST',
                 mode: 'cors',
@@ -267,6 +273,7 @@ function submitForm() {
                 body: JSON.stringify(info)
             }).then(response => {
                 return response.json().then(data => {
+                    // If user is already in Mailchimp, update them instead
                     if (data.status == 400) {
                         return fetch('/mailchimp/update-member', {
                             method: 'POST',
@@ -277,55 +284,11 @@ function submitForm() {
                             },
                             body: JSON.stringify(info)
                         }).then(response => {
-                                return fetch('/auth/users', {
-                                    method: 'POST',
-                                    mode: 'cors',
-                                    cache: 'no-cache',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(info)
-                                }).then(response => {
-                                    let responseMessage = ""
-                                    let registerButton = ""
-                                    let closeModalButton = `<button class="close-modal-button" onclick="hideModal();">Close Modal</button>`
-                                    return response.json().then(userData => {
-                                        if (userData.status === '200') {
-                                            console.log(userData)
-                                            responseMessage = `Welcome back BMI #${userData.serialNumber}, we're glad you were able to make it to this evening's demonstration.`
-                                            document.getElementById('responseMessage').innerHTML = `<div style="margin: 0 auto;">
-                                                <p>${responseMessage}</p>
-                                                ${closeModalButton}
-                                            </div>`
-                                            document.querySelector('.email-signup-button').style.display = 'none'
-                                            document.querySelector('.email-signup-input').style.display = 'none'
-                                            document.querySelector('.email-signup-text').style.display = 'none'
-                              
-                                        } else if (userData.status === '404') {
-                                            console.log(info)
-                                            responseMessage = `We're glad you were able to make it to this evening's demonstration.<br /><br /> It looks like you have not yet registered your BMI device. Would you like to do that now?`
-                                            registerButton = `<button class="register-button" onclick="generateID('` + info.email + `');">Register</button>`
-                                            document.getElementById('responseMessage').innerHTML = `<div>
-                                                <p>${responseMessage}</p>
-                                                <div class="register-close-wrapper">
-                                                ${registerButton}
-                                                ${closeModalButton}
-                                                </div>
-                                            </div>`
-                                            document.querySelector('.email-signup-button').style.display = 'none'
-                                            document.querySelector('.email-signup-input').style.display = 'none'
-                                            document.querySelector('.email-signup-text').style.display = 'none'
-                                        }
-                                    })
-                                })
-                            })
+                            checkBMIStatus(info)
+                        })
+                    // If user is not in Mailchimp, skip update and proceed to BMI update
                     } else {
-                        console.log(response)
-                        document.getElementById("modal").style.opacity = 0;
-                        document.getElementById("modal").style.display = 'none';
-                        document.getElementById("bgvid").style.opacity = 0;
-                        document.getElementById("bgvid").style.display = 'none';
-                        document.getElementById("map").style.visibility = 'visible';
+                        checkBMIStatus(info)
                     }
                 })
             })

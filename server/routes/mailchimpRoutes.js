@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const { json } = require("body-parser");
 const { map } = require("bluebird");
 const MailchimpClient = require("@mailchimp/mailchimp_marketing");
-// const MailchimpTransactional = require('@mailchimp/mailchimp_transactional')(process.env.MAILCHIMP_API_KEY);
 const crypto = require('crypto')
 const fetch = require('node-fetch');
 
@@ -74,26 +73,5 @@ router.route("/update-member").post(async (req, res, next) => {
     .catch(error => console.log('error', error));
     
 })
-
-// router.route("/send-email").post((req, res, next) => {
-//     const message = {
-//         "html": `<div>
-//             <p>Check out the new Starset Live video!</p>
-//         </div>`,
-//         "subject": "DEVOLUTION LIVE",
-//         "from_email": "starset@fearlessrecords.com",
-//         "from_name": "STARSET",
-//         "to": [ {
-//             'email': `${req.body.email}`
-//         } ],
-//     }
-//     const run = async () => {
-//       const response = await MailchimpTransactional.messages.send({ message: message });
-//       console.log(response);
-//     };
-    
-//     run();
-    
-// })
 
 module.exports = router;
