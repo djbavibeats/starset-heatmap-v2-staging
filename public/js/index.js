@@ -197,7 +197,7 @@ function generateID(email) {
         body: JSON.stringify(info)
     }).then(response => response.json().then(data => {
         serialNumber = data.serialNumber
-        let responseMessage = `Thank you for registering. Your BMI Serial Number is #${serialNumber}, please take a screenshot of this for ease of access.<br /><br />Additionaly, be sure to check your email momentarily.<br /><br />Enjoy this evening's demonstration.`
+        let responseMessage = `Thank you for registering your BMI. Your Serial Number is #${serialNumber}, please take a screenshot of this for ease of access.<br /><br />Additionally, be sure to check your email momentarily.<br /><br />Enjoy this evening's demonstration.`
         let closeModalButton = `<button class="close-modal-button" onclick="hideModal();">Close Modal</button>`
         document.getElementById('responseMessage').innerHTML = `<div style="margin: 0 auto;">
             <p>${responseMessage}</p>
