@@ -197,7 +197,7 @@ function generateID(email) {
         body: JSON.stringify(info)
     }).then(response => response.json().then(data => {
         serialNumber = data.serialNumber
-        let responseMessage = `Thank you for registering. Your BMI Serial Number is #${serialNumber}, please take a screenshot of this for ease of access. Enjoy the demonstration.`
+        let responseMessage = `Thank you for registering. Your BMI Serial Number is #${serialNumber}, please take a screenshot of this for ease of access.<br /><br />Additionaly, be sure to check your email momentarily.<br /><br />Enjoy this evening's demonstration.`
         let closeModalButton = `<button class="close-modal-button" onclick="hideModal();">Close Modal</button>`
         document.getElementById('responseMessage').innerHTML = `<div style="margin: 0 auto;">
             <p>${responseMessage}</p>
@@ -220,10 +220,11 @@ function checkBMIStatus(info) {
         let responseMessage = ""
         let registerButton = ""
         let closeModalButton = `<button class="close-modal-button" onclick="hideModal();">Close Modal</button>`
+        let emailCopy = `Thank you for `
         return response.json().then(userData => {
             // User has already registered their serial number
             if (userData.status === '200') {
-                responseMessage = `Welcome back BMI #${userData.serialNumber}, we're glad you were able to make it to this evening's demonstration.`
+                responseMessage = `Welcome back BMI #${userData.serialNumber}.<br /><br />Please be sure to check your email momentarily.<br /><br />Enjoy this evening's demonstration.`
                 document.getElementById('responseMessage').innerHTML = `<div style="margin: 0 auto;">
                     <p>${responseMessage}</p>
                     ${closeModalButton}
