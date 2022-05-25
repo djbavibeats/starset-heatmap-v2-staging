@@ -15,6 +15,7 @@ const cityRouter = require("./routes/cityRoute")
 
 const publicPath = path.join(__dirname, "/../public");
 const port = process.env.PORT || 4000;
+const basicAuth = require('./middleware/auth'); 
 let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
@@ -33,6 +34,7 @@ var allowCrossDomain = function(req, res, next) {
   }
 };
 
+app.use(basicAuth)
 app.use(express.static(publicPath))
 app.use(allowCrossDomain);
 

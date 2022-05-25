@@ -27,27 +27,28 @@ MongoClient.connect(process.env.MONGODB_STRING, function (err, client) {
     //     .catch(error => console.error(error))
     // })
 
+
     router.route("/").get((req, res, next) => {
         db.collection('rebels').find().toArray()
-        .then(results => {
-            let json = results[0];
-            delete json["_id"]
-            results.map((result) => {
-                // console.log(result);
-                delete result["_id"]
+            .then(results => {
+                let json = results[0];
+                delete json["_id"]
+                results.map((result) => {
+                    // console.log(result);
+                    delete result["_id"]
+                })
+                dataArray = results.map(function(e){
+                    return JSON.stringify(e);
+                });
+                
+                dataString = `{
+                    "type":"FeatureCollection",
+                    "features":[` + 
+                        dataArray.join(",") 
+                    + `]
+                }`
+                return res.send(dataString)
             })
-            dataArray = results.map(function(e){
-                return JSON.stringify(e);
-            });
-              
-            dataString = `{
-                "type":"FeatureCollection",
-                "features":[` + 
-                    dataArray.join(",") 
-                + `]
-            }`
-            return res.send(dataString)
-        })
     })
 });
 
