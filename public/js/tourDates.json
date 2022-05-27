@@ -6,7 +6,15 @@
             "venue": "the truman",
             "latitude": "39.0953",
             "longitude": "-94.5763",
-            "date": "5/22/2022"
+            "date": "5/25/2022"
+        },
+        {
+            "city": "denver",
+            "state": "colorado",
+            "venue": "summit music hall",
+            "latitude": "39.7534",
+            "longitude": "-104.9952",
+            "date": "5/27/2022"
         }
     ]
 }
