@@ -15,6 +15,14 @@
             "latitude": "39.7534",
             "longitude": "-104.9952",
             "date": "5/27/2022"
+        },
+        {
+            "city": "salt lake city",
+            "state": "utah",
+            "venue": "the complex",
+            "latitude": "40.7677",
+            "longitude": "-111.9066",
+            "date": "5/28/2022"
         }
     ]
 }
