@@ -23,6 +23,14 @@
             "latitude": "40.7677",
             "longitude": "-111.9066",
             "date": "5/28/2022"
+        },
+        {
+            "city": "portland",
+            "state": "oregon",
+            "venue": "roseland theater",
+            "latitude": "45.5232",
+            "longitude": "-122.6763",
+            "date": "5/30/2022"
         }
     ]
 }
