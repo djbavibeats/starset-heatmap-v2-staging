@@ -36,9 +36,11 @@
             "city": "seattle",
             "state": "washington",
             "venue": "neptune theatre",
-            "latitude": "46.3468",
-            "longitude": "-124.0565",
+            "latitude": "47.6625411,",
+            "longitude": "-122.30434",
             "date": "5/31/2022"
+
+            
         }
     ]
 }
