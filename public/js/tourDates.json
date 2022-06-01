@@ -38,9 +38,15 @@
             "venue": "neptune theatre",
             "latitude": "47.6625",
             "longitude": "-122.3043",
-            "date": "5/31/2022"
-
-            
+            "date": "5/31/2022"    
+        },
+        {
+            "city": "boise",
+            "state": "idaho",
+            "venue": "revolution concert house",
+            "latitude": "43.6512",
+            "longitude": "-116.2813",
+            "date": "6/1/2022"
         }
     ]
 }
