@@ -47,6 +47,14 @@
             "latitude": "43.6512",
             "longitude": "-116.2813",
             "date": "6/1/2022"
+        }, 
+        {
+            "city": "sacramento",
+            "state": "california",
+            "venue": "ace of spades",
+            "latitude": "38.5700",
+            "longitude": "-121.4909",
+            "date": "6/3/2022"
         }
     ]
 }
