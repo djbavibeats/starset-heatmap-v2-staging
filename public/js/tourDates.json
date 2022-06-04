@@ -55,6 +55,14 @@
             "latitude": "38.5700",
             "longitude": "-121.4909",
             "date": "6/3/2022"
+        },
+        {
+            "city": "las vegas",
+            "state": "nevada",
+            "venue": "house of blues",
+            "latitude": "36.0929942",
+            "longitude": "-115.1757617",
+            "date": "6/4/2022"
         }
     ]
 }
