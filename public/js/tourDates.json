@@ -63,6 +63,14 @@
             "latitude": "36.0929942",
             "longitude": "-115.1757617",
             "date": "6/4/2022"
+        },
+        {
+            "city": "san diego",
+            "state": "california",
+            "venue": "house of blues",
+            "latitude": "32.7163",
+            "longitude": "-117.1596",
+            "date": "6/5/2022"
         }
     ]
 }
