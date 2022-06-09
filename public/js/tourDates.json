@@ -79,6 +79,14 @@
             "latitude": "33.6996",
             "longitude": "-117.9198",
             "date": "6/7/2022"
+        },
+        {
+            "city": "phoenix",
+            "state": "arizona",
+            "venue": "marquee theatre",
+            "latitude": "33.4369",
+            "longitude": "-111.9484",
+            "date": "6/8/2022"
         }
     ]
 }
