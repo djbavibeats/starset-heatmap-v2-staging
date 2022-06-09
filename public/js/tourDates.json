@@ -71,6 +71,14 @@
             "latitude": "32.7163",
             "longitude": "-117.1596",
             "date": "6/5/2022"
+        },
+        {
+            "city": "santa ana",
+            "state": "california",
+            "venue": "the observatory",
+            "latitude": "33.6996",
+            "longitude": "-117.9198",
+            "date": "6/7/2022"
         }
     ]
 }
