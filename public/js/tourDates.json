@@ -103,6 +103,14 @@
             "latitude": "35.3862722",
             "longitude": "-97.4806455",
             "date": "6/11/2022"
+        },
+        {
+            "city": "little rock",
+            "state": "arkansas",
+            "venue": "Music Hall",
+            "latitude": "34.7410012",
+            "longitude": "-92.2817688",
+            "date": "6/12/2022"
         }
     ]
 }
