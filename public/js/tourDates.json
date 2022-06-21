@@ -111,6 +111,14 @@
             "latitude": "34.7410012",
             "longitude": "-92.2817688",
             "date": "6/12/2022"
+        },
+        {
+            "city": "atlanta",
+            "state": "georgia",
+            "venue": "The Masquerade",
+            "latitude": "33.7516281",
+            "longitude": "-84.3920234",
+            "date": "6/14/2022"
         }
     ]
 }
