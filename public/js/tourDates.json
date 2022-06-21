@@ -135,6 +135,14 @@
             "latitude": "28.083285",
             "longitude": "-82.4538112",
             "date": "6/17/2022"
+        },
+        {
+            "city": "fort lauderdale",
+            "state": "florida",
+            "venue": "Revolution Live",
+            "latitude": "26.1213628",
+            "longitude": "-80.1483861",
+            "date": "6/18/2022"
         }
     ]
 }
