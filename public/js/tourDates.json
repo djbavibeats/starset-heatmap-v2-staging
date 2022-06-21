@@ -87,6 +87,14 @@
             "latitude": "33.4369",
             "longitude": "-111.9484",
             "date": "6/8/2022"
+        },
+        {
+            "city": "wichita",
+            "state": "kansas",
+            "venue": "TempeLive",
+            "latitude": "37.6883805",
+            "longitude": "-97.3368464",
+            "date": "6/10/2022"
         }
     ]
 }
