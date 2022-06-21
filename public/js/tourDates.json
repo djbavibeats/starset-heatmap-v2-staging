@@ -143,6 +143,14 @@
             "latitude": "26.1213628",
             "longitude": "-80.1483861",
             "date": "6/18/2022"
+        },
+        {
+            "city": "lake buena vista",
+            "state": "florida",
+            "venue": "House of Blues Orlando",
+            "latitude": "28.3710339",
+            "longitude": "-81.5241477",
+            "date": "6/19/2022"
         }
     ]
 }
