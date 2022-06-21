@@ -127,6 +127,14 @@
             "latitude": "36.0116026",
             "longitude": "-83.9252238",
             "date": "6/15/2022"
+        },
+        {
+            "city": "tampa",
+            "state": "florida",
+            "venue": "The Orpheum",
+            "latitude": "28.083285",
+            "longitude": "-82.4538112",
+            "date": "6/17/2022"
         }
     ]
 }
