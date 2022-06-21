@@ -95,6 +95,14 @@
             "latitude": "37.6883805",
             "longitude": "-97.3368464",
             "date": "6/10/2022"
+        },
+        {
+            "city": "oklahoma city",
+            "state": "oklahoma",
+            "venue": "Diamond Ballroom",
+            "latitude": "35.3862722",
+            "longitude": "-97.4806455",
+            "date": "6/11/2022"
         }
     ]
 }
