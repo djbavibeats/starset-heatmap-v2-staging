@@ -151,6 +151,14 @@
             "latitude": "28.3710339",
             "longitude": "-81.5241477",
             "date": "6/19/2022"
+        },
+        {
+            "city": "chattanooga",
+            "state": "tennessee",
+            "venue": "The Signal",
+            "latitude": "35.0355546",
+            "longitude": "-85.3166935",
+            "date": "6/21/2022"
         }
     ]
 }
