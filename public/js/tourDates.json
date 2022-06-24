@@ -167,6 +167,14 @@
             "latitude": "32.7884395",
             "longitude": "-79.9390958",
             "date": "6/22/2022"
+        },
+        {
+            "city": "norfolk",
+            "state": "virginia",
+            "venue": "The NorVa",
+            "latitude": "36.850189",
+            "longitude": "-76.2916887",
+            "date": "6/24/2022"
         }
     ]
 }
