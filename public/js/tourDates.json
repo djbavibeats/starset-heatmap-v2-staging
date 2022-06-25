@@ -175,6 +175,14 @@
             "latitude": "36.850189",
             "longitude": "-76.2916887",
             "date": "6/24/2022"
+        },  
+        {
+            "city": "baltimore",
+            "state": "maryland",
+            "venue": "Rams Head Live!",
+            "latitude": "39.2894485",
+            "longitude": "-76.6094109",
+            "date": "6/25/2022"
         }
     ]
 }
