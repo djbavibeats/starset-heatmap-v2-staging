@@ -183,6 +183,14 @@
             "latitude": "39.2894485",
             "longitude": "-76.6094109",
             "date": "6/25/2022"
+        },  
+        {
+            "city": "sayerville",
+            "state": "new jersey",
+            "venue": "Starland Ballroom",
+            "latitude": "40.44041",
+            "longitude": "-74.3574067",
+            "date": "6/26/2022"
         }
     ]
 }
