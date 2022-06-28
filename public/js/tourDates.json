@@ -191,6 +191,14 @@
             "latitude": "40.44041",
             "longitude": "-74.3574067",
             "date": "6/26/2022"
+        },  
+        {
+            "city": "albany",
+            "state": "new york",
+            "venue": "Empire Live",
+            "latitude": "42.6526799",
+            "longitude": "-73.7548687",
+            "date": "6/28/2022"
         }
     ]
 }
