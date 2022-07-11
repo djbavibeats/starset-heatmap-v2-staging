@@ -255,6 +255,14 @@
             "latitude": "39.96991710491384",
             "longitude": "-83.00999879218067",
             "date": "7/9/2022"
+        },
+        {
+            "city": "indianapolis",
+            "state": "indiana",
+            "venue": "The Vogue",
+            "latitude": "39.86926018633403",
+            "longitude": "-86.1457983461606",
+            "date": "7/10/2022"
         }
     ]
 }
