@@ -231,6 +231,14 @@
             "latitude": "45.482961656916395",
             "longitude": "-73.57515833253592",
             "date": "7/3/2022"
+        },
+        {
+            "city": "toronto",
+            "state": "ontario",
+            "venue": "The Danforth Music Hall",
+            "latitude": "43.676345254728346",
+            "longitude": "-79.35701903073324",
+            "date": "7/5/2022"
         }
     ]
 }
