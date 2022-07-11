@@ -199,6 +199,14 @@
             "latitude": "42.6526799",
             "longitude": "-73.7548687",
             "date": "6/28/2022"
+        },
+        { 
+            "city": "huntington",
+            "state": "new york",
+            "venue": "The Paramount",
+            "latitude": "40.86979551823762",
+            "longitude": "-73.42594319949984",
+            "date": "6/29/2022"
         }
     ]
 }
