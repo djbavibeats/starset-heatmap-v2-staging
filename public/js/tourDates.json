@@ -207,6 +207,14 @@
             "latitude": "40.86979551823762",
             "longitude": "-73.42594319949984",
             "date": "6/29/2022"
+        },
+        {
+            "city": "syracuse",
+            "state": "new york",
+            "venue": "Sharkey's",
+            "latitude": "43.12178854814368",
+            "longitude": "-76.21350808657046",
+            "date": "7/1/2022"
         }
     ]
 }
