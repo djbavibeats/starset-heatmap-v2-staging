@@ -247,6 +247,14 @@
             "latitude": "41.251600502844724",
             "longitude": "-80.83013424428373",
             "date": "7/8/2022"
+        },
+        {
+            "city": "columbus",
+            "state": "ohio",
+            "venue": "Kemba Live",
+            "latitude": "39.96991710491384",
+            "longitude": "-83.00999879218067",
+            "date": "7/9/2022"
         }
     ]
 }
