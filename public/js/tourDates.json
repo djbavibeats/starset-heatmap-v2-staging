@@ -239,6 +239,14 @@
             "latitude": "43.676345254728346",
             "longitude": "-79.35701903073324",
             "date": "7/5/2022"
+        },
+        {
+            "city": "youngstown",
+            "state": "ohio",
+            "venue": "Packard Music Hall",
+            "latitude": "41.251600502844724",
+            "longitude": "-80.83013424428373",
+            "date": "7/8/2022"
         }
     ]
 }
