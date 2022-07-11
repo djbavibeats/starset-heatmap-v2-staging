@@ -223,6 +223,14 @@
             "latitude": "44.46893964584731",
             "longitude": "-73.17560402755409",
             "date": "7/2/2022"
+        },
+        {
+            "city": "montreal",
+            "state": "quebec",
+            "venue": "Theatre Corona",
+            "latitude": "45.482961656916395",
+            "longitude": "-73.57515833253592",
+            "date": "7/3/2022"
         }
     ]
 }
