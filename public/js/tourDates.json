@@ -263,6 +263,14 @@
             "latitude": "39.86926018633403",
             "longitude": "-86.1457983461606",
             "date": "7/10/2022"
+        },
+        {
+            "city": "joliet",
+            "state": "illinois",
+            "venue": "The Forge",
+            "latitude": "41.52781290690996",
+            "longitude": "-88.0821793463674",
+            "date": "7/12/2022"
         }
     ]
 }
