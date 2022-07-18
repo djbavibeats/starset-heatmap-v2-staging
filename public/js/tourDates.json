@@ -271,6 +271,14 @@
             "latitude": "41.52781290690996",
             "longitude": "-88.0821793463674",
             "date": "7/12/2022"
+        },
+        {
+            "city": "louisville",
+            "state": "kentucky",
+            "venue": "Mercury Ballroom",
+            "latitude": "38.248508705848096",
+            "longitude": "-85.75776931366724",
+            "date": "7/13/2022"
         }
     ]
 }
